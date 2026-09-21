@@ -15,10 +15,16 @@ Locator priority should remain: accessible role/label, stable attributes or test
 
 ## Run locally
 
+From a fresh clone, one command installs locked dependencies and any missing bundled browsers, removes generated results, and runs all static build checks:
+
 ```bash
-corepack pnpm install
-corepack pnpm exec playwright install chromium firefox webkit
-corepack pnpm run check
+corepack pnpm run build
+```
+
+Run the complete bundled-browser test suite with:
+
+```bash
+corepack pnpm test
 ```
 
 Set `BASE_URL` when tests begin navigating to a deployed application. The initial tests use local HTML so the framework contract can be validated independently of an environment.
@@ -28,6 +34,7 @@ Playwright's WebKit build provides Safari-engine coverage, but it is not the bra
 ### Quality gates
 
 - `pnpm run check:static` verifies formatting, ESLint rules, and TypeScript.
+- `pnpm run build` installs dependencies and browsers, cleans generated output, and runs static checks.
 - `pnpm test` runs Chromium, Firefox, and WebKit in both locales.
 - `pnpm run test:chromium` provides a faster local browser check.
 - `pnpm run test:edge` runs the branded Edge projects after `pnpm exec playwright install msedge`; installing Edge may require administrator access.
@@ -63,6 +70,18 @@ Additional Playwright arguments can follow the project selection. For example, t
 ```bash
 corepack pnpm exec playwright test tests/e2e/signup-page.spec.ts --project=firefox-fr-CA --headed
 ```
+
+### Test artifacts
+
+The default configuration is failure-focused:
+
+- Screenshots are captured only when a test fails.
+- Videos and Playwright traces are retained only when a test fails.
+- Local artifacts are written under `test-results/`; the HTML report is written under `playwright-report/`.
+- CI uploads both directories for 14 days, including failure screenshots, videos, and traces.
+- Test runner output is visible in the terminal and CI logs. Browser console messages are not currently saved to dedicated log files.
+
+Run `corepack pnpm run clean` to remove local reports and test artifacts.
 
 ## Structure
 
