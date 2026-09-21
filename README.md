@@ -7,6 +7,7 @@ A narrow Playwright + TypeScript foundation for maintainable UI and REST API tes
 - Locale-specific `en-CA` and `fr-CA` projects across Chromium, Firefox, WebKit, and Microsoft Edge.
 - Typed, fixture-injected `AppText` loaded outside Page Objects.
 - Independently maintained expected-copy files for language assertions.
+- Deployed signup copy is kept in typed per-locale baseline files under `test-data/expected-copy/live-signup/` and injected into its Page Object; adding a locale requires a new baseline and registry entry, not more conditional text in the Page Object.
 - A task-oriented `SignupPage`; multi-page conditional journeys should use focused workflow classes.
 - An ordered `LocatorResolver` that records the successful strategy in test annotations and rejects ambiguous visible matches. It does not mutate selectors or use opaque healing.
 - Playwright's built-in `request` fixture is available for REST API tests without adding another client.
@@ -109,7 +110,7 @@ corepack pnpm run test:env staging
 corepack pnpm run test:env staging --project=chromium-en-CA
 ```
 
-`staging` maps to `https://app.qa.nesto.ca/signup`, as supplied by the project owner; the page's French link points to `/fr/signup`, which is configured separately. The command runs the read-only UI smoke by default; it opens the locale-specific signup route and checks for an accessibly named email field without submitting. The API target and health path are not known yet, so `corepack pnpm run test:env staging api` fails closed until both are added to `config/environments/staging.json`. Production execution is intentionally disabled, including if someone sets `TEST_ENV=production` directly. `pnpm test` and CI continue to run only self-contained framework tests. The API smoke is a single browserless project; the UI smoke runs across browser/locale projects.
+`staging` maps to `https://app.qa.nesto.ca/signup`, as supplied by the project owner; the page's French link points to `/fr/signup`, which is configured separately. The command runs a read-only route smoke and one signup-language-switch case by default. The new case follows the EN/FR link and verifies the destination heading and email field; it does not submit the form. The API target and health path are not known yet, so `corepack pnpm run test:env staging api` fails closed until both are added to `config/environments/staging.json`. Production execution is intentionally disabled, including if someone sets `TEST_ENV=production` directly. `pnpm test` and CI continue to run only self-contained framework tests. The API smoke is a single browserless project; the UI suite runs across browser/locale projects.
 
 The environment file selects a matching `dataProfile`. Tests can request the `signupCases` fixture, which loads and validates `test-data/scenarios/<profile>/signup.json`. Only the synthetic self-contained profile is committed. Staging and production data directories are ignored by Git; add local files only after confirming the target environment's data policy and cleanup approach. No live test currently creates data. Keep secrets and personal data out of the versioned environment files.
 
