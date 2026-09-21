@@ -26,4 +26,6 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Ver
 
 ### Documentation
 
+- Living test roadmap covering coverage tags, reporting, failure triage, ROI metrics, and platform evaluation.
+- Repository agent guide for safe, consistent Playwright test-case creation.
 - Framework structure, local commands, browser distinctions, and planned increments.
