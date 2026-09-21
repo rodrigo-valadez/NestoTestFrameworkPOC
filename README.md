@@ -7,6 +7,7 @@ A narrow Playwright + TypeScript foundation for maintainable UI and REST API tes
 - Locale-specific `en-CA` and `fr-CA` projects across Chromium, Firefox, WebKit, and Microsoft Edge.
 - Typed, fixture-injected `AppText` loaded outside Page Objects.
 - Independently maintained expected-copy files for language assertions.
+- Deployed signup copy is kept in typed per-locale baseline files under `test-data/expected-copy/live-signup/` and injected into its Page Object; adding a locale requires a new baseline and registry entry, not more conditional text in the Page Object.
 - A task-oriented `SignupPage`; multi-page conditional journeys should use focused workflow classes.
 - An ordered `LocatorResolver` that records the successful strategy in test annotations and rejects ambiguous visible matches. It does not mutate selectors or use opaque healing.
 - Playwright's built-in `request` fixture is available for REST API tests without adding another client.
