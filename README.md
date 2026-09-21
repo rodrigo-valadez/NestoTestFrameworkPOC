@@ -10,6 +10,7 @@ A narrow Playwright + TypeScript foundation for maintainable UI and REST API tes
 - A task-oriented `SignupPage`; multi-page conditional journeys should use focused workflow classes.
 - An ordered `LocatorResolver` that records the successful strategy in test annotations and rejects ambiguous visible matches. It does not mutate selectors or use opaque healing.
 - Playwright's built-in `request` fixture is available for REST API tests without adding another client.
+- JSON-driven signup scenarios with runtime validation and a separate Playwright test per case.
 
 Locator priority should remain: accessible role/label, stable attributes or test IDs, scoped relationships, text patterns, then structural CSS/XPath as a last resort.
 
@@ -83,6 +84,21 @@ The default configuration is failure-focused:
 
 Run `corepack pnpm run clean` to remove local reports and test artifacts.
 
+### Data-driven scenarios
+
+Edit `test-data/scenarios/signup.json` to add or remove signup cases:
+
+```json
+{
+  "cases": [
+    { "id": "standard-email", "email": "qa@example.test" },
+    { "id": "plus-addressed-email", "email": "qa+signup@example.test" }
+  ]
+}
+```
+
+Each case runs as its own test in every selected browser/locale project, so failures name the case that failed. The loader checks for missing or duplicate IDs and malformed email values before the test suite runs; it does not prove an email address is deliverable. Keep committed cases synthetic and non-sensitive; the example test still uses self-contained HTML, not a live signup endpoint. Environment-specific datasets and account creation/cleanup will be added once target environments and their data policies are known.
+
 ## Structure
 
 ```text
@@ -91,6 +107,7 @@ src/fixtures/              Playwright dependency injection
 src/i18n/                  locale contracts and loading
 src/pages/                 task-oriented Page Objects
 test-data/expected-copy/   independently approved language baselines
+test-data/scenarios/       synthetic JSON-driven test cases
 tests/framework/           framework contract tests
 tests/e2e/                 user-facing journey tests
 ```

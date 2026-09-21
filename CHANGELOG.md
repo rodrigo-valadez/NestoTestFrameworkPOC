@@ -16,6 +16,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Ver
 - ESLint, Prettier, Husky, and lint-staged quality checks.
 - GitHub Actions quality gate with Playwright report artifacts.
 - One-command local setup/build workflow and explicit artifact retention documentation.
+- JSON-driven signup scenarios with runtime validation and one test result per case.
 
 ### Documentation
 

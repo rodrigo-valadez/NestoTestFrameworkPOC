@@ -1,0 +1,12 @@
+{
+  "cases": [
+    {
+      "id": "standard-email",
+      "email": "qa@example.test"
+    },
+    {
+      "id": "plus-addressed-email",
+      "email": "qa+signup@example.test"
+    }
+  ]
+}
