@@ -15,6 +15,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Ver
 - Chromium, Firefox, WebKit, and Microsoft Edge browser coverage.
 - ESLint, Prettier, Husky, and lint-staged quality checks.
 - GitHub Actions quality gate with Playwright report artifacts.
+- One-command local setup/build workflow and explicit artifact retention documentation.
 
 ### Documentation
 
