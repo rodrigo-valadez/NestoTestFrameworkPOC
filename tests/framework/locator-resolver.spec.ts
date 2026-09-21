@@ -19,7 +19,10 @@ test('uses the first unique visible locator and records its strategy', async ({
   });
 });
 
-test('ignores hidden matches when exactly one match is visible', async ({ page, locatorResolver }) => {
+test('ignores hidden matches when exactly one match is visible', async ({
+  page,
+  locatorResolver
+}) => {
   await page.setContent(`
     <button class="action" hidden>Continue</button>
     <button class="action">Continue</button>
@@ -32,7 +35,10 @@ test('ignores hidden matches when exactly one match is visible', async ({ page, 
   await expect(button).toBeVisible();
 });
 
-test('fails instead of guessing when a strategy is ambiguous', async ({ page, locatorResolver }) => {
+test('fails instead of guessing when a strategy is ambiguous', async ({
+  page,
+  locatorResolver
+}) => {
   await page.setContent('<button>Continue</button><button>Continue</button>');
 
   await expect(

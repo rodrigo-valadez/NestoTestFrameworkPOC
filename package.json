@@ -5,14 +5,37 @@
   "packageManager": "pnpm@11.19.0",
   "description": "Maintainable Playwright and TypeScript test framework proof of concept",
   "scripts": {
-    "check": "npm run typecheck && npm test",
+    "check": "pnpm run check:static && pnpm test",
+    "check:static": "pnpm run format:check && pnpm run lint && pnpm run typecheck",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint . --max-warnings=0",
+    "prepare": "husky",
     "test": "playwright test",
+    "test:chromium": "playwright test --project=chromium-en-CA --project=chromium-fr-CA",
+    "test:edge": "cross-env PLAYWRIGHT_INCLUDE_EDGE=true playwright test --project=edge-en-CA --project=edge-fr-CA",
     "test:headed": "playwright test --headed",
     "typecheck": "tsc --noEmit"
   },
+  "lint-staged": {
+    "*.{ts,mts,cts,js,mjs,cjs}": [
+      "eslint --max-warnings=0",
+      "prettier --check"
+    ],
+    "*.{json,jsonc,md,yml,yaml}": "prettier --check"
+  },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.55.0",
     "@types/node": "^24.3.0",
-    "typescript": "^5.9.2"
+    "cross-env": "^10.1.0",
+    "eslint": "^10.11.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-playwright": "^2.12.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.5.1",
+    "prettier": "^3.9.8",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.70.0"
   }
 }
