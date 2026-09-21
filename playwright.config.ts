@@ -1,6 +1,22 @@
 import { defineConfig, devices } from '@playwright/test';
+import type { Project } from '@playwright/test';
+import type { SupportedLocale } from './src/i18n/app-text';
 
 const baseURL = process.env.BASE_URL ?? 'http://127.0.0.1:3000';
+const locales: readonly SupportedLocale[] = ['en-CA', 'fr-CA'];
+const includeEdge = process.env.PLAYWRIGHT_INCLUDE_EDGE === 'true';
+
+function localizedProjects(
+  browserName: string,
+  deviceName: keyof typeof devices,
+  browserUse: Project['use'] = {}
+): Project[] {
+  return locales.map(locale => ({
+    name: `${browserName}-${locale}`,
+    metadata: { locale },
+    use: { ...devices[deviceName], ...browserUse, locale }
+  }));
+}
 
 export default defineConfig({
   testDir: './tests',
@@ -15,15 +31,9 @@ export default defineConfig({
     video: 'retain-on-failure'
   },
   projects: [
-    {
-      name: 'chromium-en-CA',
-      metadata: { locale: 'en-CA' },
-      use: { ...devices['Desktop Chrome'], locale: 'en-CA' }
-    },
-    {
-      name: 'chromium-fr-CA',
-      metadata: { locale: 'fr-CA' },
-      use: { ...devices['Desktop Chrome'], locale: 'fr-CA' }
-    }
+    ...localizedProjects('chromium', 'Desktop Chrome'),
+    ...localizedProjects('firefox', 'Desktop Firefox'),
+    ...localizedProjects('webkit', 'Desktop Safari'),
+    ...(includeEdge ? localizedProjects('edge', 'Desktop Edge', { channel: 'msedge' }) : [])
   ]
 });
