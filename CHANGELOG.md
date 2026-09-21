@@ -8,6 +8,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Ver
 
 ### Added
 
+- First deployed-page QA test case: switch signup language in both directions without submitting the form.
 - Playwright and TypeScript framework foundation.
 - Locale-specific `en-CA` and `fr-CA` projects with typed expected-copy fixtures.
 - Task-oriented signup Page Object.
