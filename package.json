@@ -1,0 +1,18 @@
+{
+  "name": "nesto-test-framework-poc",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.19.0",
+  "description": "Maintainable Playwright and TypeScript test framework proof of concept",
+  "scripts": {
+    "check": "npm run typecheck && npm test",
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@types/node": "^24.3.0",
+    "typescript": "^5.9.2"
+  }
+}
