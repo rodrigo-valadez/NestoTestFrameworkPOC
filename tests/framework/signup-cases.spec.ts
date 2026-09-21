@@ -1,5 +1,16 @@
 import { expect, test } from '@playwright/test';
-import { parseSignupCases } from '../../src/test-data/signup-cases';
+import { loadSignupCases, parseSignupCases } from '../../src/test-data/signup-cases';
+
+test('loads the selected data profile', () => {
+  expect(loadSignupCases('self-contained').map(signupCase => signupCase.id)).toEqual([
+    'standard-email',
+    'plus-addressed-email'
+  ]);
+});
+
+test('rejects invalid data-profile names', () => {
+  expect(() => loadSignupCases('../private')).toThrow('Invalid test data profile');
+});
 
 test('parses named signup cases from JSON-shaped data', () => {
   expect(parseSignupCases({ cases: [{ id: 'standard-email', email: 'qa@example.test' }] })).toEqual(

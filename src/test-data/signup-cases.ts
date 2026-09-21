@@ -39,8 +39,12 @@ export function parseSignupCases(value: unknown): SignupCase[] {
   });
 }
 
-export function loadSignupCases(): SignupCase[] {
-  const path = join(__dirname, '../../test-data/scenarios/signup.json');
+export function loadSignupCases(profile: string): SignupCase[] {
+  if (!/^[a-z][a-z0-9-]*$/.test(profile)) {
+    throw new Error(`Invalid test data profile: ${profile}`);
+  }
+
+  const path = join(__dirname, '../../test-data/scenarios', profile, 'signup.json');
   let parsed: unknown;
 
   try {

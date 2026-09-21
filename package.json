@@ -14,10 +14,13 @@
     "lint": "eslint . --max-warnings=0",
     "prepare": "husky",
     "setup": "pnpm install --frozen-lockfile && pnpm exec playwright install chromium firefox webkit",
-    "test": "playwright test",
-    "test:chromium": "playwright test --project=chromium-en-CA --project=chromium-fr-CA",
-    "test:edge": "cross-env PLAYWRIGHT_INCLUDE_EDGE=true playwright test --project=edge-en-CA --project=edge-fr-CA",
-    "test:headed": "playwright test --headed",
+    "test": "cross-env LIVE_SUITE=framework playwright test",
+    "test:framework": "cross-env LIVE_SUITE=framework playwright test tests/framework",
+    "test:real-app": "cross-env LIVE_SUITE=real-app playwright test tests/real-app",
+    "test:api": "cross-env LIVE_SUITE=api playwright test tests/api",
+    "test:chromium": "cross-env LIVE_SUITE=framework playwright test --project=chromium-en-CA --project=chromium-fr-CA",
+    "test:edge": "cross-env LIVE_SUITE=framework PLAYWRIGHT_INCLUDE_EDGE=true playwright test --project=edge-en-CA --project=edge-fr-CA",
+    "test:headed": "cross-env LIVE_SUITE=framework playwright test --headed",
     "typecheck": "tsc --noEmit"
   },
   "lint-staged": {

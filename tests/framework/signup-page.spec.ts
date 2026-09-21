@@ -1,7 +1,8 @@
 import { expect, test } from '../../src/fixtures/test';
 import { loadSignupCases } from '../../src/test-data/signup-cases';
 
-for (const signupCase of loadSignupCases()) {
+// This uses local HTML and validates framework wiring, not a deployed application.
+for (const signupCase of loadSignupCases('self-contained')) {
   test(`drives signup controls for ${signupCase.id} using the project locale`, async ({
     page,
     appText,

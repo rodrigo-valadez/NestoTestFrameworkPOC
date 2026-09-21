@@ -28,7 +28,7 @@ Run the complete bundled-browser test suite with:
 corepack pnpm test
 ```
 
-Set `BASE_URL` when tests begin navigating to a deployed application. The initial tests use local HTML so the framework contract can be validated independently of an environment.
+The default suite is self-contained and never navigates to a deployed application. Set `TEST_ENV` and run an explicit live-suite command to check a deployed environment; see [Environment and data profiles](#environment-and-data-profiles).
 
 Playwright's WebKit build provides Safari-engine coverage, but it is not the branded Safari browser. WebKit on macOS is the closest automated approximation when Safari-specific behaviour matters.
 
@@ -69,7 +69,7 @@ corepack pnpm exec cross-env PLAYWRIGHT_INCLUDE_EDGE=true playwright test --proj
 Additional Playwright arguments can follow the project selection. For example, this runs one test file in headed French Firefox:
 
 ```bash
-corepack pnpm exec playwright test tests/e2e/signup-page.spec.ts --project=firefox-fr-CA --headed
+corepack pnpm exec playwright test tests/framework/signup-page.spec.ts --project=firefox-fr-CA --headed
 ```
 
 ### Test artifacts
@@ -80,13 +80,13 @@ The default configuration is failure-focused:
 - Videos and Playwright traces are retained only when a test fails.
 - Local artifacts are written under `test-results/`; the HTML report is written under `playwright-report/`.
 - CI uploads both directories for 14 days, including failure screenshots, videos, and traces.
-- Test runner output is visible in the terminal and CI logs. Browser console messages are not currently saved to dedicated log files.
+- Test runner output is visible in the terminal and CI logs. Console warnings/errors and uncaught page errors are attached to failed tests from the app fixture after basic redaction. Treat these artifacts as potentially sensitive and do not put credentials or real personal data in test cases.
 
 Run `corepack pnpm run clean` to remove local reports and test artifacts.
 
 ### Data-driven scenarios
 
-Edit `test-data/scenarios/signup.json` to add or remove signup cases:
+Edit `test-data/scenarios/self-contained/signup.json` to add or remove synthetic signup cases:
 
 ```json
 {
@@ -97,7 +97,26 @@ Edit `test-data/scenarios/signup.json` to add or remove signup cases:
 }
 ```
 
-Each case runs as its own test in every selected browser/locale project, so failures name the case that failed. The loader checks for missing or duplicate IDs and malformed email values before the test suite runs; it does not prove an email address is deliverable. Keep committed cases synthetic and non-sensitive; the example test still uses self-contained HTML, not a live signup endpoint. Environment-specific datasets and account creation/cleanup will be added once target environments and their data policies are known.
+Each case runs as its own test in every selected browser/locale project, so failures name the case that failed. The loader checks for missing or duplicate IDs and malformed email values before the test suite runs; it does not prove an email address is deliverable. Keep committed cases synthetic and non-sensitive; the framework example still uses self-contained HTML, not a live signup endpoint.
+
+### Environment and data profiles
+
+`TEST_ENV` selects `self-contained` (default), `staging`, or `production`. It is selected once per run; it does not multiply the browser/locale project matrix. For a live environment, supply your actual values through environment variables:
+
+```bash
+export TEST_ENV=staging
+export UI_BASE_URL=https://staging.example.test
+export API_BASE_URL=https://api-staging.example.test
+export SIGNUP_PATH=/signup
+export API_HEALTH_PATH=/health
+
+corepack pnpm run test:real-app
+corepack pnpm run test:api
+```
+
+The `example.test` URLs and paths above are placeholders, not known nesto endpoints. Both live checks are read-only: the UI check opens the signup route and verifies one visible, accessibly named email field; the API check sends one GET to the configured health path. Neither creates an account or submits a form. Missing or malformed configuration fails before navigation. `pnpm test` and CI continue to run only self-contained framework tests, even when live environment variables are set. The API smoke is a single browserless project; the UI smoke runs across browser/locale projects.
+
+The environment selects a matching `TEST_DATA_PROFILE` (`self-contained`, `staging`, or `production` by default). Tests can request the `signupCases` fixture, which loads and validates `test-data/scenarios/<profile>/signup.json`. Only the synthetic self-contained profile is committed. Staging and production data directories are ignored by Git; add local files only after confirming the target environment's data policy and cleanup approach. No live test currently creates data.
 
 ## Structure
 
@@ -107,15 +126,16 @@ src/fixtures/              Playwright dependency injection
 src/i18n/                  locale contracts and loading
 src/pages/                 task-oriented Page Objects
 test-data/expected-copy/   independently approved language baselines
-test-data/scenarios/       synthetic JSON-driven test cases
-tests/framework/           framework contract tests
-tests/e2e/                 user-facing journey tests
+test-data/scenarios/       environment-selected JSON-driven test cases
+tests/framework/           self-contained framework contract tests
+tests/real-app/            opt-in read-only UI smoke tests
+tests/api/                 opt-in read-only API smoke tests
 ```
 
 ## Next increments
 
-1. Confirm the real signup route, stable identity contracts, and approved bilingual copy.
-2. Add the first environment-backed signup journey and a focused workflow only if it crosses pages or branches.
+1. Confirm the real signup route, health path, stable identity contracts, and approved bilingual copy.
+2. Add the first environment-backed signup journey and a focused workflow only if it crosses pages or branches; define test-account creation and cleanup policy first.
 3. Add `@axe-core/playwright` accessibility checks and agreed WCAG rules.
 4. Define measurable performance budgets before selecting browser timing or Lighthouse coverage.
 5. Add data builders and API setup/cleanup around concrete test cases.
