@@ -28,7 +28,7 @@ Run the complete bundled-browser test suite with:
 corepack pnpm test
 ```
 
-The default suite is self-contained and never navigates to a deployed application. Set `TEST_ENV` and run an explicit live-suite command to check a deployed environment; see [Environment and data profiles](#environment-and-data-profiles).
+The default suite is self-contained and never navigates to a deployed application. Use `test:env` to select the QA target explicitly; see [Environment and data profiles](#environment-and-data-profiles).
 
 Playwright's WebKit build provides Safari-engine coverage, but it is not the branded Safari browser. WebKit on macOS is the closest automated approximation when Safari-specific behaviour matters.
 
@@ -101,27 +101,23 @@ Each case runs as its own test in every selected browser/locale project, so fail
 
 ### Environment and data profiles
 
-`TEST_ENV` selects `self-contained` (default), `staging`, or `production`. It is selected once per run; it does not multiply the browser/locale project matrix. For a live environment, supply your actual values through environment variables:
+Pass the environment as a command argument. Configuration lives in `config/environments/`, so no URL exports are needed:
 
 ```bash
-export TEST_ENV=staging
-export UI_BASE_URL=https://staging.example.test
-export API_BASE_URL=https://api-staging.example.test
-export SIGNUP_PATH=/signup
-export API_HEALTH_PATH=/health
-
-corepack pnpm run test:real-app
-corepack pnpm run test:api
+corepack pnpm run test:env self-contained
+corepack pnpm run test:env staging
+corepack pnpm run test:env staging --project=chromium-en-CA
 ```
 
-The `example.test` URLs and paths above are placeholders, not known nesto endpoints. Both live checks are read-only: the UI check opens the signup route and verifies one visible, accessibly named email field; the API check sends one GET to the configured health path. Neither creates an account or submits a form. Missing or malformed configuration fails before navigation. `pnpm test` and CI continue to run only self-contained framework tests, even when live environment variables are set. The API smoke is a single browserless project; the UI smoke runs across browser/locale projects.
+`staging` maps to `https://app.qa.nesto.ca/signup`, as supplied by the project owner; the page's French link points to `/fr/signup`, which is configured separately. The command runs the read-only UI smoke by default; it opens the locale-specific signup route and checks for an accessibly named email field without submitting. The API target and health path are not known yet, so `corepack pnpm run test:env staging api` fails closed until both are added to `config/environments/staging.json`. Production execution is intentionally disabled, including if someone sets `TEST_ENV=production` directly. `pnpm test` and CI continue to run only self-contained framework tests. The API smoke is a single browserless project; the UI smoke runs across browser/locale projects.
 
-The environment selects a matching `TEST_DATA_PROFILE` (`self-contained`, `staging`, or `production` by default). Tests can request the `signupCases` fixture, which loads and validates `test-data/scenarios/<profile>/signup.json`. Only the synthetic self-contained profile is committed. Staging and production data directories are ignored by Git; add local files only after confirming the target environment's data policy and cleanup approach. No live test currently creates data.
+The environment file selects a matching `dataProfile`. Tests can request the `signupCases` fixture, which loads and validates `test-data/scenarios/<profile>/signup.json`. Only the synthetic self-contained profile is committed. Staging and production data directories are ignored by Git; add local files only after confirming the target environment's data policy and cleanup approach. No live test currently creates data. Keep secrets and personal data out of the versioned environment files.
 
 ## Structure
 
 ```text
 src/framework/             reusable test infrastructure
+config/environments/       versioned, non-secret environment targets
 src/fixtures/              Playwright dependency injection
 src/i18n/                  locale contracts and loading
 src/pages/                 task-oriented Page Objects

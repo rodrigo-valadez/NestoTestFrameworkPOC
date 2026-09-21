@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
-import { loadEnvironmentConfig } from '../../src/config/environment';
+import { loadEnvironmentConfig, parseEnvironmentConfig } from '../../src/config/environment';
 
-test('defaults to a read-only self-contained environment', () => {
+test('loads the checked-in self-contained profile by default', () => {
   expect(loadEnvironmentConfig({})).toEqual({
     name: 'self-contained',
     dataProfile: 'self-contained',
@@ -9,33 +9,28 @@ test('defaults to a read-only self-contained environment', () => {
   });
 });
 
-test('requires explicit endpoints and signup path for staging', () => {
-  expect(() => loadEnvironmentConfig({ TEST_ENV: 'staging' })).toThrow('UI_BASE_URL is required');
-  expect(
-    loadEnvironmentConfig({
-      TEST_ENV: 'staging',
-      UI_BASE_URL: 'https://staging.example.test',
-      API_BASE_URL: 'https://api-staging.example.test',
-      SIGNUP_PATH: '/signup',
-      API_HEALTH_PATH: '/health'
-    })
-  ).toMatchObject({
+test('loads the checked-in staging UI target without guessing an API endpoint', () => {
+  expect(loadEnvironmentConfig({ TEST_ENV: 'staging' })).toMatchObject({
     name: 'staging',
-    dataProfile: 'staging',
+    uiBaseURL: 'https://app.qa.nesto.ca',
     signupPath: '/signup',
-    apiHealthPath: '/health',
+    signupPathFr: '/fr/signup',
+    dataProfile: 'staging',
     capabilities: { realAppSmoke: true, accountCreation: false }
   });
+  expect(loadEnvironmentConfig({ TEST_ENV: 'staging' }).apiBaseURL).toBeUndefined();
 });
 
-test('rejects unsafe or malformed environment values', () => {
+test('rejects production, unknown targets, and unsafe configuration', () => {
+  expect(() => loadEnvironmentConfig({ TEST_ENV: 'production' })).toThrow('disabled by policy');
   expect(() => loadEnvironmentConfig({ TEST_ENV: 'unknown' })).toThrow('Unsupported TEST_ENV');
   expect(() =>
-    loadEnvironmentConfig({
-      TEST_ENV: 'production',
-      UI_BASE_URL: 'https://user:password@example.test',
-      API_BASE_URL: 'https://api.example.test',
-      SIGNUP_PATH: '/signup'
+    parseEnvironmentConfig('staging', {
+      uiBaseURL: 'https://user:password@example.test',
+      signupPath: '/signup'
     })
   ).toThrow('without embedded credentials');
+  expect(() => parseEnvironmentConfig('staging', { uiBaseURL: null, signupPath: null })).toThrow(
+    'Staging is not configured'
+  );
 });

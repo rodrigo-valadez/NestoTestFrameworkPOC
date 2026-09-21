@@ -1,0 +1,8 @@
+{
+  "uiBaseURL": "https://app.qa.nesto.ca",
+  "apiBaseURL": null,
+  "signupPath": "/signup",
+  "signupPathFr": "/fr/signup",
+  "apiHealthPath": null,
+  "dataProfile": "staging"
+}
