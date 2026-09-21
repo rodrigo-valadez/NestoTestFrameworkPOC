@@ -36,6 +36,34 @@ Playwright's WebKit build provides Safari-engine coverage, but it is not the bra
 
 To make the GitHub check mandatory, configure the `Quality gate` job as a required status check in the repository's branch protection or ruleset for `main` after this workflow has run once.
 
+### Run one browser and locale
+
+Every browser/locale combination is a separate Playwright project. Select one with `--project`:
+
+```bash
+# Chromium
+corepack pnpm exec playwright test --project=chromium-en-CA
+corepack pnpm exec playwright test --project=chromium-fr-CA
+
+# Firefox
+corepack pnpm exec playwright test --project=firefox-en-CA
+corepack pnpm exec playwright test --project=firefox-fr-CA
+
+# WebKit (Safari engine)
+corepack pnpm exec playwright test --project=webkit-en-CA
+corepack pnpm exec playwright test --project=webkit-fr-CA
+
+# Microsoft Edge; requires Edge to be installed
+corepack pnpm exec cross-env PLAYWRIGHT_INCLUDE_EDGE=true playwright test --project=edge-en-CA
+corepack pnpm exec cross-env PLAYWRIGHT_INCLUDE_EDGE=true playwright test --project=edge-fr-CA
+```
+
+Additional Playwright arguments can follow the project selection. For example, this runs one test file in headed French Firefox:
+
+```bash
+corepack pnpm exec playwright test tests/e2e/signup-page.spec.ts --project=firefox-fr-CA --headed
+```
+
 ## Structure
 
 ```text
