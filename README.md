@@ -2,6 +2,8 @@
 
 A narrow Playwright + TypeScript foundation for maintainable UI and REST API testing.
 
+For planned coverage, reporting, failure triage, and metrics, see [the test roadmap](docs/TEST_ROADMAP.md). Contributors and coding agents should follow [the repository test-writing guide](AGENTS.md).
+
 ## First implementation
 
 - Locale-specific `en-CA` and `fr-CA` projects across Chromium, Firefox, WebKit, and Microsoft Edge.
