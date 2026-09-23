@@ -19,9 +19,11 @@ interface AppFixtures {
   signupPage: SignupPage;
   browserDiagnostics: BrowserDiagnostics;
   signupCases: SignupCase[];
+  browserDiagnosticsEnabled: boolean;
 }
 
 export const test = base.extend<AppFixtures>({
+  browserDiagnosticsEnabled: [true, { option: true }],
   signupCases: async ({ environment }, use) => {
     await use(loadSignupCases(environment.dataProfile));
   },
@@ -38,7 +40,7 @@ export const test = base.extend<AppFixtures>({
   liveSignupText: async ({ locale }, use) => {
     await use(loadLiveSignupText(locale));
   },
-  liveSignupPage: async ({ page, environment, locale, liveSignupText }, use) => {
+  liveSignupPage: async ({ page, environment, locale, liveSignupText, locatorResolver }, use) => {
     const target = requireRealAppEnvironment(environment);
     const paths: Record<SupportedLocale, string> = {
       'en-CA': target.signupPath,
@@ -49,7 +51,8 @@ export const test = base.extend<AppFixtures>({
         page,
         paths[locale],
         paths[liveSignupText.languageSwitchTarget],
-        liveSignupText
+        liveSignupText,
+        locatorResolver
       )
     );
   },
@@ -60,10 +63,10 @@ export const test = base.extend<AppFixtures>({
     await use(new SignupPage(page, appText, locatorResolver));
   },
   browserDiagnostics: [
-    async ({ page }, use, testInfo) => {
-      const diagnostics = new BrowserDiagnostics(page);
+    async ({ page, browserDiagnosticsEnabled }, use, testInfo) => {
+      const diagnostics = new BrowserDiagnostics(page, browserDiagnosticsEnabled);
       await use(diagnostics);
-      await diagnostics.attachOnFailure(testInfo);
+      if (browserDiagnosticsEnabled) await diagnostics.attachOnFailure(testInfo);
     },
     { auto: true }
   ]

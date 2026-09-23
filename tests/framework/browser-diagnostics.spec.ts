@@ -30,3 +30,17 @@ test('attaches redacted console diagnostics only on failure', async ({ page }) =
     }
   ]);
 });
+
+test('captures and attaches nothing when diagnostics are disabled', async ({ page }) => {
+  const diagnostics = new BrowserDiagnostics(page, false);
+  await page.evaluate(() => console.error('password=must-not-be-collected'));
+  const attachments: string[] = [];
+  await diagnostics.attachOnFailure({
+    status: 'failed',
+    expectedStatus: 'passed',
+    attach: async name => {
+      attachments.push(name);
+    }
+  });
+  expect(attachments).toEqual([]);
+});

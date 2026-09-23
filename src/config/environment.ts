@@ -23,6 +23,11 @@ export type ApiHealthEnvironmentConfig = EnvironmentConfig & {
   apiHealthPath: string;
 };
 
+export type AccountCreationEnvironmentConfig = RealAppEnvironmentConfig & {
+  name: 'staging';
+  capabilities: { realAppSmoke: true; accountCreation: true };
+};
+
 export function requireRealAppEnvironment(
   environment: EnvironmentConfig
 ): RealAppEnvironmentConfig {
@@ -39,6 +44,15 @@ export function requireApiHealthEnvironment(
     throw new Error('Configure apiBaseURL and apiHealthPath for staging before API smoke.');
   }
   return environment as ApiHealthEnvironmentConfig;
+}
+
+export function requireAccountCreationEnvironment(
+  environment: EnvironmentConfig
+): AccountCreationEnvironmentConfig {
+  if (environment.name !== 'staging' || !environment.capabilities.accountCreation) {
+    throw new Error('QA account creation requires the explicit staging capability switch.');
+  }
+  return requireRealAppEnvironment(environment) as AccountCreationEnvironmentConfig;
 }
 
 function optionalString(value: unknown, name: string): string | undefined {
@@ -117,5 +131,15 @@ export function loadEnvironmentConfig(env: NodeJS.ProcessEnv = process.env): Env
   }
   if (name === 'production') throw new Error('Production test execution is disabled by policy.');
   const file = resolve(__dirname, '../../config/environments', `${name}.json`);
-  return parseEnvironmentConfig(name, JSON.parse(readFileSync(file, 'utf8')) as unknown);
+  const environment = parseEnvironmentConfig(
+    name,
+    JSON.parse(readFileSync(file, 'utf8')) as unknown
+  );
+  if (name === 'staging' && env.QA_ACCOUNT_CREATION === 'true') {
+    return {
+      ...environment,
+      capabilities: { ...environment.capabilities, accountCreation: true }
+    };
+  }
+  return environment;
 }

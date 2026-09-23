@@ -1,0 +1,10 @@
+[
+  {
+    "id": "weak-password",
+    "target": "password"
+  },
+  {
+    "id": "overlong-email",
+    "target": "email"
+  }
+]

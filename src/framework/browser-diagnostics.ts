@@ -14,14 +14,24 @@ export function redactDiagnostic(value: string): string {
 
 export class BrowserDiagnostics {
   private readonly entries: string[] = [];
+  private readonly enabled: boolean;
 
-  constructor(private readonly page: Page) {
+  constructor(
+    private readonly page: Page,
+    enabled = true
+  ) {
+    this.enabled = enabled;
+    if (!enabled) return;
     page.on('console', message => {
       if (message.type() === 'warning' || message.type() === 'error') {
         this.add(`console.${message.type()}: ${message.text()}`);
       }
     });
     page.on('pageerror', error => this.add(`pageerror: ${error.message}`));
+  }
+
+  collectionEnabled(): boolean {
+    return this.enabled;
   }
 
   private add(message: string): void {
