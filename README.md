@@ -142,7 +142,7 @@ tests/api/                 opt-in read-only API smoke tests
 
 ## Next increments
 
-1. Complete Stage 8 metrics using reviewed denominators that distinguish executions, failure clusters, and unique bugs.
+1. Review and approve the Stage 8 metrics baseline and proposed denominator, then collect comparable snapshots that distinguish executions, failure clusters, and unique bugs.
 2. Ask the API owner to review the populated sensitive-shaped response field through an approved secure channel before changing the observer or proposing another live write.
 3. Add account reconciliation and cleanup support before implementing duplicate-account automation or expanding persistent-account coverage.
 4. Review and approve the recorded axe-core WCAG A/AA baseline before enforcing a no-regression gate.
