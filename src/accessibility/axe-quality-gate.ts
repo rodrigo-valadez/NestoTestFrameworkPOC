@@ -61,7 +61,9 @@ export function parseAxeBaseline(value: unknown): AxeBaseline {
     candidate.schemaVersion !== 1 ||
     candidate.standard !== 'WCAG 2.1 AA' ||
     !Array.isArray(candidate.failingImpacts) ||
-    !candidate.failingImpacts.every(isImpact) ||
+    candidate.failingImpacts.length !== 2 ||
+    !candidate.failingImpacts.includes('serious') ||
+    !candidate.failingImpacts.includes('critical') ||
     !isIsoDate(candidate.approvedBaselineDate) ||
     !Array.isArray(candidate.findings)
   ) {
@@ -100,7 +102,7 @@ export function parseAxeBaseline(value: unknown): AxeBaseline {
   return {
     schemaVersion: 1,
     standard: 'WCAG 2.1 AA',
-    failingImpacts: candidate.failingImpacts,
+    failingImpacts: ['serious', 'critical'],
     approvedBaselineDate: candidate.approvedBaselineDate,
     findings
   };

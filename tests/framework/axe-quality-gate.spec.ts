@@ -82,3 +82,12 @@ test('axe baseline rejects blank governance fields and duplicate records', () =>
     })
   ).toThrow('duplicates an earlier record');
 });
+
+test('axe baseline cannot redefine the approved failing impacts', () => {
+  expect(() =>
+    parseAxeBaseline({
+      ...baseline,
+      failingImpacts: ['minor', 'critical']
+    })
+  ).toThrow('metadata is invalid');
+});
