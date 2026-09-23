@@ -73,12 +73,12 @@ Do not combine self-contained framework executions, read-only deployed checks, a
 
 ## Stage 8 handoff
 
-- **What was done:** calculated a first signup metrics snapshot using the roadmap definitions; separated one committed run, 54 read-only executions, ten account attempts, reviewed clusters, and bug records; added an approved-goal coverage denominator and explicit missing data.
+- **What was done:** calculated a first signup metrics snapshot using the roadmap definitions; separated one committed run, 54 read-only executions, ten account attempts, reviewed clusters, and bug records; added a proposed coverage denominator based on approved goals and explicit missing data.
 - **What the evidence shows:** the published run has 48 passes and six expected observations of one known bug; one automated product-bug cluster is confirmed; at least one cluster remains untriaged; eight of ten areas in the proposed grouping have executed evidence.
 - **Choices and reasons:** proposed a ten-area grouping of the human-approved first-pass goals and excluded explicitly deferred mailbox and active-probe work. Reported rates only where a numeric reviewed denominator exists. Kept framework checks and account attempts outside the deployed read-only pass-rate denominator.
 - **Checks:** reconciled the report summary against its 54 case entries and six projects; reconciled the ten account attempts and triage classifications against the approved Stage 7 result; repository formatting and static checks are required before handoff.
 - **Risks and open questions:** the sample is one day and one published run; the exact number of uncertain diagnostic clusters, investigation time, production escapes, and costs are unavailable. The human owner must decide whether the ten goal areas are the ongoing coverage denominator and who owns periodic triage.
-- **Skeptical review:** pending distinct review of the committed draft revision.
+- **Skeptical review:** distinct skeptical review agent, 2026-09-23. Review of draft `5901d4c` found that a single run could not support a flake rate, the ten-area denominator and 80% figure needed provisional status, placeholder-domain rejection belonged under `test-data`, zero category counts needed a scoped denominator, and repository status text needed updating. Those findings were corrected in `01649f2`. The reviewer rechecked that exact revision, confirmed every substantive finding resolved with counts and safety boundaries intact, and requested one minor approval-provenance wording correction in this handoff. That correction does not change any evidence or metric.
 - **Recommended next step:** approve this as the initial calibration baseline and begin collecting comparable weekly read-only snapshots; do not set thresholds until enough periods exist to show normal variation.
 
 ### Human decision
