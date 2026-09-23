@@ -4,7 +4,7 @@ A narrow Playwright + TypeScript foundation for maintainable UI and REST API tes
 
 For planned coverage, reporting, failure triage, and metrics, see [the test roadmap](docs/TEST_ROADMAP.md). Contributors and coding agents should follow [the repository test-writing guide](AGENTS.md).
 
-The signup flow has approved artifacts through the guarded [Stage 6 implementation handoff](docs/SIGNUP_IMPLEMENTATION_HANDOFF.md). Bounded QA investigation identified the deployed `POST /api/accounts` contract and observed one privacy-safe HTTP 201 response with submitted account information; see the current [Stage 7 result](docs/SIGNUP_RESULTS.md). Ten lifetime slots are consumed, ten remain, and further live execution is paused because the final observer found a populated sensitive-shaped optional response field. Read-only negative and accessibility coverage remains safe to run.
+The signup flow has approved artifacts through the [Stage 7 result](docs/SIGNUP_RESULTS.md), including the guarded [Stage 6 implementation handoff](docs/SIGNUP_IMPLEMENTATION_HANDOFF.md). Bounded QA investigation identified the deployed `POST /api/accounts` contract and observed one privacy-safe HTTP 201 response with submitted account information. Ten lifetime slots are consumed, ten remain, and further live execution is paused because the final observer found a populated sensitive-shaped optional response field. Read-only negative and accessibility coverage remains safe to run.
 
 For a repeatable feature-to-metrics handoff with human decisions and independent skeptical review, see the [agent test workflow](docs/AGENT_TEST_WORKFLOW.md) and [stage handoff template](docs/STAGE_HANDOFF_TEMPLATE.md).
 
@@ -92,7 +92,7 @@ The default configuration is failure-focused:
 - Local artifacts are written under `test-results/`; the HTML report is written under `playwright-report/`.
 - CI uploads both directories for 14 days, including failure screenshots, videos, and traces.
 - Test runner output is visible in the terminal and CI logs. Console warnings/errors and uncaught page errors are attached to failed tests from the app fixture after basic redaction. Treat these artifacts as potentially sensitive and do not put credentials or real personal data in test cases.
-- The write-capable signup project disables screenshots, video, traces, HTML reporting, and browser diagnostics. Its local ledger must also be marked executable after the Stage 6 human gate before a submission can occur.
+- The write-capable signup project disables screenshots, video, traces, HTML reporting, and browser diagnostics. Its local ledger is disabled after ten attempts. A new explicit human decision covering the proposed attempt is required before it may be marked executable again; the historical Stage 6 approval does not authorize another submission.
 
 Run `corepack pnpm run clean` to remove local reports and test artifacts.
 
@@ -142,9 +142,9 @@ tests/api/                 opt-in read-only API smoke tests
 
 ## Next increments
 
-1. Confirm the real signup route, health path, stable identity contracts, and approved bilingual copy.
-2. Add the first environment-backed signup journey and a focused workflow only if it crosses pages or branches; define test-account creation and capped-retention or cleanup policy first.
-3. Review and approve the recorded axe-core WCAG A/AA baseline before enforcing a no-regression gate.
-4. Define measurable performance budgets before selecting browser timing or Lighthouse coverage.
-5. Add data builders and API setup/cleanup around concrete test cases.
-6. Add GitHub Actions and Jenkins stages only after the local suite and deployment environments are agreed.
+1. Complete Stage 8 metrics using reviewed denominators that distinguish executions, failure clusters, and unique bugs.
+2. Ask the API owner to review the populated sensitive-shaped response field through an approved secure channel before changing the observer or proposing another live write.
+3. Add account reconciliation and cleanup support before implementing duplicate-account automation or expanding persistent-account coverage.
+4. Review and approve the recorded axe-core WCAG A/AA baseline before enforcing a no-regression gate.
+5. Confirm the API health path and approved bilingual copy, then add a read-only API smoke check when its contract is available.
+6. Define measurable performance budgets before selecting browser timing or Lighthouse coverage.

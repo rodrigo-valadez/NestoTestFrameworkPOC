@@ -40,10 +40,31 @@
 - **Decision maker, date, and reviewed revision:** requesting user, 2026-09-23
 - **Current execution state:** ledger disabled; ten attempts consumed and ten remain
 
+### Evidence and triage
+
+Execution count is the number of test or investigation observations. Cluster count groups repeated observations with the same apparent cause; it is not a bug count.
+
+| Record                          | Executions | Clusters         | Classification                     | State and owner                                                              | Sanitized evidence                                                                                                                                                           |
+| ------------------------------- | ---------: | ---------------- | ---------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `BUG-SIGNUP-002`                |          6 | 1                | Open product bug                   | Open; product owner, recorded 2026-09-23                                     | [Bug report](SIGNUP_BUG_REPORT.md#bug-signup-002--signup-sends-an-email-exceeding-standard-length-limits-to-the-account-api), [latest report](test-report/latest/index.html) |
+| Placeholder-email rejection     |          2 | 1                | Expected deployed validation       | Closed as observed behavior; QA owner, 2026-09-23                            | [Result narrative](#stage-7-results-analyst--sgn-006)                                                                                                                        |
+| Earlier diagnostic uncertainty  |          6 | Not assigned     | Untriaged investigation outcomes   | Consumed and retained as uncertain; QA owner, 2026-09-23; no retry           | [Execution counts](#execution-counts)                                                                                                                                        |
+| Safe HTTP 201 contract evidence |          1 | Not a failure    | Successful contract observation    | Reviewed; QA owner, 2026-09-23                                               | [Result narrative](#stage-7-results-analyst--sgn-006)                                                                                                                        |
+| Privacy-stopped confirmation    |          1 | 1 safety outcome | Open API contract/privacy question | Ledger disabled; API owner review requested, 2026-09-23; no retry authorized | [Final confirmation](#stage-7-results-analyst--sgn-006), [security review](SIGNUP_SECURITY_REVIEW.md)                                                                        |
+
+The six `BUG-SIGNUP-002` executions are one product-bug cluster across the browser/locale matrix. The account-creation rows describe the same ten lifetime attempts counted in the table above: two 422 responses, six other uncertain investigations, one safe 201 observation, and one privacy-stopped confirmation. They must not be added to the six read-only bug reproductions as though all 16 observations were account writes or unique bugs. Write-capable evidence contains no committed screenshots, videos, traces, identities, or response bodies by design.
+
 ### Stage 7 approval
 
 - **Decision requested from:** requesting user and ledger owner
 - **Decision requested:** approve this Stage 7 result and its handoff to Stage 8 metrics while keeping live writes disabled
 - **Decision:** approved
-- **Decision maker, date, and reviewed artifact:** requesting user and ledger owner, 2026-09-23, after reviewing this result and explicitly approving Stage 7
+- **Decision maker, date, and reviewed revision:** requesting user and ledger owner, 2026-09-23, after reviewing the Stage 7 result at revision `31baff4` and explicitly approving Stage 7. The later cleanup reconciles status, triage, and provenance without changing execution evidence, scope, or authorization.
 - **Conditions:** no additional QA write is authorized; the local ledger remains disabled with ten attempts consumed and ten unused; Stage 8 must distinguish executions, failure clusters, and unique bugs and must state its denominator
+
+### Final skeptical review
+
+- **Reviewer, date, and revision:** distinct skeptical review agent, 2026-09-23, revision `4dc4dd8`
+- **Findings:** no blocker. Two major process gaps required a Stage 7 triage/evidence table and an explicit new-decision boundary in agent guidance. Two minor gaps required current README status/next steps and exact approval/review provenance.
+- **Disposition:** corrected in the revision following `4dc4dd8`. The changes are editorial and process controls; they do not change run evidence, approved scope, the disabled ledger, or the Stage 7 human decision. The distinct reviewer must recheck the corrected revision before PR handoff.
+- **Unverified assumptions:** the reviewer did not rerun browser suites or inspect sensitive ledger identity values; it relied on the committed sanitized report, prior recorded checks, and aggregate ledger state.
