@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-23T21:38:59.879Z",
-  "sourceRevision": "31baff4a4a5939d43957d6c9b722deb63e0240b4",
+  "generatedAt": "2026-09-23T22:46:12.695Z",
+  "sourceRevision": "07343b3cf807023de57688a6bb14ce3c68d322ae",
   "environment": "staging",
   "suite": "real-app",
   "command": "pnpm run test:report:staging",
   "results": {
-    "startTime": "2026-09-23T21:38:22.274Z",
-    "duration": 37525.911,
+    "startTime": "2026-09-23T22:45:35.141Z",
+    "duration": 37482.770000000004,
     "expected": 54,
     "skipped": 0,
     "unexpected": 0,
@@ -18,325 +18,325 @@
       "case": "SGN-009 reports the signup accessibility baseline with severity @real-app",
       "project": "chromium-en-CA",
       "outcome": "passed",
-      "durationMs": 2339
+      "durationMs": 2561
     },
     {
       "case": "SGN-009 reports the signup accessibility baseline with severity @real-app",
       "project": "chromium-fr-CA",
       "outcome": "passed",
-      "durationMs": 1930
+      "durationMs": 2293
     },
     {
       "case": "SGN-009 reports the signup accessibility baseline with severity @real-app",
       "project": "firefox-en-CA",
       "outcome": "passed",
-      "durationMs": 3808
+      "durationMs": 4094
     },
     {
       "case": "SGN-009 reports the signup accessibility baseline with severity @real-app",
       "project": "firefox-fr-CA",
       "outcome": "passed",
-      "durationMs": 3801
+      "durationMs": 3847
     },
     {
       "case": "SGN-009 reports the signup accessibility baseline with severity @real-app",
       "project": "webkit-en-CA",
       "outcome": "passed",
-      "durationMs": 2473
+      "durationMs": 2707
     },
     {
       "case": "SGN-009 reports the signup accessibility baseline with severity @real-app",
       "project": "webkit-fr-CA",
       "outcome": "passed",
-      "durationMs": 2475
+      "durationMs": 2329
     },
     {
       "case": "SGN-001 signup route exposes the complete visible form contract @real-app",
       "project": "chromium-en-CA",
       "outcome": "passed",
-      "durationMs": 2106
+      "durationMs": 2203
     },
     {
       "case": "SGN-017 partner consent can be toggled without submission @real-app",
       "project": "chromium-en-CA",
       "outcome": "passed",
-      "durationMs": 3003
+      "durationMs": 2997
     },
     {
       "case": "SGN-001 signup route exposes the complete visible form contract @real-app",
       "project": "chromium-fr-CA",
       "outcome": "passed",
-      "durationMs": 2064
+      "durationMs": 1712
     },
     {
       "case": "SGN-017 partner consent can be toggled without submission @real-app",
       "project": "chromium-fr-CA",
       "outcome": "passed",
-      "durationMs": 2764
+      "durationMs": 2875
     },
     {
       "case": "SGN-001 signup route exposes the complete visible form contract @real-app",
       "project": "firefox-en-CA",
       "outcome": "passed",
-      "durationMs": 3693
+      "durationMs": 3564
     },
     {
       "case": "SGN-017 partner consent can be toggled without submission @real-app",
       "project": "firefox-en-CA",
       "outcome": "passed",
-      "durationMs": 3681
+      "durationMs": 3883
     },
     {
       "case": "SGN-001 signup route exposes the complete visible form contract @real-app",
       "project": "firefox-fr-CA",
       "outcome": "passed",
-      "durationMs": 3608
+      "durationMs": 3297
     },
     {
       "case": "SGN-017 partner consent can be toggled without submission @real-app",
       "project": "firefox-fr-CA",
       "outcome": "passed",
-      "durationMs": 3507
+      "durationMs": 3699
     },
     {
       "case": "SGN-001 signup route exposes the complete visible form contract @real-app",
       "project": "webkit-en-CA",
       "outcome": "passed",
-      "durationMs": 2340
+      "durationMs": 2200
     },
     {
       "case": "SGN-017 partner consent can be toggled without submission @real-app",
       "project": "webkit-en-CA",
       "outcome": "passed",
-      "durationMs": 3391
+      "durationMs": 3283
     },
     {
       "case": "SGN-001 signup route exposes the complete visible form contract @real-app",
       "project": "webkit-fr-CA",
       "outcome": "passed",
-      "durationMs": 1709
+      "durationMs": 2609
     },
     {
       "case": "SGN-017 partner consent can be toggled without submission @real-app",
       "project": "webkit-fr-CA",
       "outcome": "passed",
-      "durationMs": 3019
+      "durationMs": 3305
     },
     {
       "case": "SGN-002 signup language switch exposes the destination signup form @real-app",
       "project": "chromium-en-CA",
       "outcome": "passed",
-      "durationMs": 2082
+      "durationMs": 2922
     },
     {
       "case": "SGN-002 signup language switch exposes the destination signup form @real-app",
       "project": "chromium-fr-CA",
       "outcome": "passed",
-      "durationMs": 2500
+      "durationMs": 1808
     },
     {
       "case": "SGN-002 signup language switch exposes the destination signup form @real-app",
       "project": "firefox-en-CA",
       "outcome": "passed",
-      "durationMs": 3298
+      "durationMs": 3673
     },
     {
       "case": "SGN-002 signup language switch exposes the destination signup form @real-app",
       "project": "firefox-fr-CA",
       "outcome": "passed",
-      "durationMs": 3641
+      "durationMs": 3432
     },
     {
       "case": "SGN-002 signup language switch exposes the destination signup form @real-app",
       "project": "webkit-en-CA",
       "outcome": "passed",
-      "durationMs": 2603
+      "durationMs": 2917
     },
     {
       "case": "SGN-002 signup language switch exposes the destination signup form @real-app",
       "project": "webkit-fr-CA",
       "outcome": "passed",
-      "durationMs": 2839
+      "durationMs": 2643
     },
     {
       "case": "SGN-005 empty required signup fields are rejected before the API @real-app",
+      "project": "chromium-en-CA",
+      "outcome": "passed",
+      "durationMs": 3276
+    },
+    {
+      "case": "SGN-005 malformed email is rejected before the API @real-app",
+      "project": "chromium-en-CA",
+      "outcome": "passed",
+      "durationMs": 3500
+    },
+    {
+      "case": "SGN-015 password confirmation mismatch is rejected before the API @real-app",
       "project": "chromium-en-CA",
       "outcome": "passed",
       "durationMs": 3025
     },
     {
-      "case": "SGN-005 malformed email is rejected before the API @real-app",
-      "project": "chromium-en-CA",
-      "outcome": "passed",
-      "durationMs": 3349
-    },
-    {
-      "case": "SGN-015 password confirmation mismatch is rejected before the API @real-app",
-      "project": "chromium-en-CA",
-      "outcome": "passed",
-      "durationMs": 2900
-    },
-    {
       "case": "SGN-016/weak-password file-driven edge input is rejected before the API @real-app",
       "project": "chromium-en-CA",
       "outcome": "passed",
-      "durationMs": 3457
+      "durationMs": 3247
     },
     {
       "case": "SGN-016/email-exceeds-standard-length file-driven edge input is rejected before the API @real-app",
       "project": "chromium-en-CA",
       "outcome": "known issue",
-      "durationMs": 3936
+      "durationMs": 3789
     },
     {
       "case": "SGN-005 empty required signup fields are rejected before the API @real-app",
       "project": "chromium-fr-CA",
       "outcome": "passed",
-      "durationMs": 2755
+      "durationMs": 2515
     },
     {
       "case": "SGN-005 malformed email is rejected before the API @real-app",
       "project": "chromium-fr-CA",
       "outcome": "passed",
-      "durationMs": 3026
+      "durationMs": 3023
     },
     {
       "case": "SGN-015 password confirmation mismatch is rejected before the API @real-app",
       "project": "chromium-fr-CA",
       "outcome": "passed",
-      "durationMs": 3139
+      "durationMs": 2729
     },
     {
       "case": "SGN-016/weak-password file-driven edge input is rejected before the API @real-app",
       "project": "chromium-fr-CA",
       "outcome": "passed",
-      "durationMs": 3311
+      "durationMs": 3267
     },
     {
       "case": "SGN-016/email-exceeds-standard-length file-driven edge input is rejected before the API @real-app",
       "project": "chromium-fr-CA",
       "outcome": "known issue",
-      "durationMs": 3842
+      "durationMs": 3628
     },
     {
       "case": "SGN-005 empty required signup fields are rejected before the API @real-app",
       "project": "firefox-en-CA",
       "outcome": "passed",
-      "durationMs": 4032
+      "durationMs": 3934
     },
     {
       "case": "SGN-005 malformed email is rejected before the API @real-app",
       "project": "firefox-en-CA",
       "outcome": "passed",
-      "durationMs": 4634
+      "durationMs": 4658
     },
     {
       "case": "SGN-015 password confirmation mismatch is rejected before the API @real-app",
       "project": "firefox-en-CA",
       "outcome": "passed",
-      "durationMs": 3623
+      "durationMs": 3577
     },
     {
       "case": "SGN-016/weak-password file-driven edge input is rejected before the API @real-app",
       "project": "firefox-en-CA",
+      "outcome": "passed",
+      "durationMs": 3307
+    },
+    {
+      "case": "SGN-016/email-exceeds-standard-length file-driven edge input is rejected before the API @real-app",
+      "project": "firefox-en-CA",
+      "outcome": "known issue",
+      "durationMs": 4416
+    },
+    {
+      "case": "SGN-005 empty required signup fields are rejected before the API @real-app",
+      "project": "firefox-fr-CA",
+      "outcome": "passed",
+      "durationMs": 4010
+    },
+    {
+      "case": "SGN-005 malformed email is rejected before the API @real-app",
+      "project": "firefox-fr-CA",
+      "outcome": "passed",
+      "durationMs": 4500
+    },
+    {
+      "case": "SGN-015 password confirmation mismatch is rejected before the API @real-app",
+      "project": "firefox-fr-CA",
       "outcome": "passed",
       "durationMs": 3685
     },
     {
-      "case": "SGN-016/email-exceeds-standard-length file-driven edge input is rejected before the API @real-app",
-      "project": "firefox-en-CA",
-      "outcome": "known issue",
-      "durationMs": 4531
-    },
-    {
-      "case": "SGN-005 empty required signup fields are rejected before the API @real-app",
-      "project": "firefox-fr-CA",
-      "outcome": "passed",
-      "durationMs": 3785
-    },
-    {
-      "case": "SGN-005 malformed email is rejected before the API @real-app",
-      "project": "firefox-fr-CA",
-      "outcome": "passed",
-      "durationMs": 4325
-    },
-    {
-      "case": "SGN-015 password confirmation mismatch is rejected before the API @real-app",
-      "project": "firefox-fr-CA",
-      "outcome": "passed",
-      "durationMs": 3513
-    },
-    {
       "case": "SGN-016/weak-password file-driven edge input is rejected before the API @real-app",
       "project": "firefox-fr-CA",
       "outcome": "passed",
-      "durationMs": 3472
+      "durationMs": 3284
     },
     {
       "case": "SGN-016/email-exceeds-standard-length file-driven edge input is rejected before the API @real-app",
       "project": "firefox-fr-CA",
       "outcome": "known issue",
-      "durationMs": 5235
+      "durationMs": 5349
     },
     {
       "case": "SGN-005 empty required signup fields are rejected before the API @real-app",
       "project": "webkit-en-CA",
       "outcome": "passed",
-      "durationMs": 3119
+      "durationMs": 3049
     },
     {
       "case": "SGN-005 malformed email is rejected before the API @real-app",
       "project": "webkit-en-CA",
       "outcome": "passed",
-      "durationMs": 3682
+      "durationMs": 3466
     },
     {
       "case": "SGN-015 password confirmation mismatch is rejected before the API @real-app",
       "project": "webkit-en-CA",
       "outcome": "passed",
-      "durationMs": 3587
+      "durationMs": 3777
     },
     {
       "case": "SGN-016/weak-password file-driven edge input is rejected before the API @real-app",
       "project": "webkit-en-CA",
       "outcome": "passed",
-      "durationMs": 3859
+      "durationMs": 4020
     },
     {
       "case": "SGN-016/email-exceeds-standard-length file-driven edge input is rejected before the API @real-app",
       "project": "webkit-en-CA",
       "outcome": "known issue",
-      "durationMs": 4314
+      "durationMs": 4498
     },
     {
       "case": "SGN-005 empty required signup fields are rejected before the API @real-app",
       "project": "webkit-fr-CA",
       "outcome": "passed",
-      "durationMs": 3340
+      "durationMs": 2904
     },
     {
       "case": "SGN-005 malformed email is rejected before the API @real-app",
       "project": "webkit-fr-CA",
       "outcome": "passed",
-      "durationMs": 3323
+      "durationMs": 3601
     },
     {
       "case": "SGN-015 password confirmation mismatch is rejected before the API @real-app",
       "project": "webkit-fr-CA",
       "outcome": "passed",
-      "durationMs": 4071
+      "durationMs": 3820
     },
     {
       "case": "SGN-016/weak-password file-driven edge input is rejected before the API @real-app",
       "project": "webkit-fr-CA",
       "outcome": "passed",
-      "durationMs": 4016
+      "durationMs": 3535
     },
     {
       "case": "SGN-016/email-exceeds-standard-length file-driven edge input is rejected before the API @real-app",
       "project": "webkit-fr-CA",
       "outcome": "known issue",
-      "durationMs": 4587
+      "durationMs": 4283
     }
   ]
 }

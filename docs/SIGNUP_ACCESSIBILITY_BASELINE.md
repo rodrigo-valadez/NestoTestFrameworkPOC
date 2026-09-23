@@ -28,4 +28,6 @@ This gate covers only rules detectable by axe-core on the initial page state. Th
 
 ## Gate verification
 
-The committed sanitized report initially recorded 54/54 expected outcomes and empty violation lists for all six SGN-009 browser/locale executions before enforcement was added. After the gate was implemented, a local read-only rerun on 2026-09-23 again completed 54/54 with empty axe lists, and focused self-contained checks passed 4/4. Those local observations are not durable report evidence for revision `47fef60`; the committed report must be regenerated from a revision containing the gate before the repository claims audited post-gate execution. No account write occurred.
+The refreshed [committed sanitized report](test-report/latest/index.html) records 54/54 expected outcomes from source revision `07343b3`, which contains the enforced gate and exception governance. All six SGN-009 browser/locale executions returned an empty axe violation list, so the current observed value remains **zero violation rules** and the empty registry is consistent with QA. Focused self-contained gate checks passed 4/4.
+
+The first report-generation attempt at the same revision had one unrelated Firefox/French SGN-005 timeout while the browser reported failed script loads; all six axe checks still passed with empty lists. The immediate complete rerun passed 54/54. This inconsistent SGN-005 result is recorded as an untriaged flake candidate rather than hidden by the successful latest report. No account write occurred in either run.
