@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "standard": "WCAG 2.1 AA",
+  "failingImpacts": ["serious", "critical"],
+  "approvedBaselineDate": "2026-09-23",
+  "findings": []
+}

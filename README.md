@@ -8,7 +8,7 @@ The signup flow has approved artifacts through the [Stage 7 result](docs/SIGNUP_
 
 For a repeatable feature-to-metrics handoff with human decisions and independent skeptical review, see the [agent test workflow](docs/AGENT_TEST_WORKFLOW.md) and [stage handoff template](docs/STAGE_HANDOFF_TEMPLATE.md).
 
-Challenge evidence is summarized in the [signup results](docs/SIGNUP_RESULTS.md), [Stage 8 metrics baseline](docs/SIGNUP_METRICS_BASELINE.md), [coverage depth](docs/SIGNUP_COVERAGE_DEPTH.md), [accessibility baseline](docs/SIGNUP_ACCESSIBILITY_BASELINE.md), [static security review](docs/SIGNUP_SECURITY_REVIEW.md), and [bug report](docs/SIGNUP_BUG_REPORT.md). The [reporting guide](docs/TEST_REPORTING.md) explains local, CI, and the single committed latest report. [Security automation](docs/SECURITY_AUTOMATION.md) documents the installed but disabled OWASP ZAP baseline runner. [Questions for Nesto](docs/NESTO_CHALLENGE_QUESTIONS.md) records the decisions that would materially change scope or expectations. Assumptions and deferred cases remain explicit in the [signup test plan](docs/SIGNUP_TEST_PLAN.md).
+Challenge evidence is summarized in the [signup results](docs/SIGNUP_RESULTS.md), [Stage 8 metrics baseline](docs/SIGNUP_METRICS_BASELINE.md), [coverage depth](docs/SIGNUP_COVERAGE_DEPTH.md), [accessibility baseline and gate](docs/SIGNUP_ACCESSIBILITY_BASELINE.md), [readability method](docs/SIGNUP_READABILITY_METHOD.md), [static security review](docs/SIGNUP_SECURITY_REVIEW.md), and [bug report](docs/SIGNUP_BUG_REPORT.md). The [reporting guide](docs/TEST_REPORTING.md) explains local, CI, and the single committed latest report. [Security automation](docs/SECURITY_AUTOMATION.md) documents the installed but disabled OWASP ZAP baseline runner. [Questions for Nesto](docs/NESTO_CHALLENGE_QUESTIONS.md) records the decisions that would materially change scope or expectations. Assumptions and deferred cases remain explicit in the [signup test plan](docs/SIGNUP_TEST_PLAN.md).
 
 ## First implementation
 
@@ -145,6 +145,6 @@ tests/api/                 opt-in read-only API smoke tests
 1. Review and approve the Stage 8 metrics baseline and proposed denominator, then collect comparable snapshots that distinguish executions, failure clusters, and unique bugs.
 2. Ask the API owner to review the populated sensitive-shaped response field through an approved secure channel before changing the observer or proposing another live write.
 3. Add account reconciliation and cleanup support before implementing duplicate-account automation or expanding persistent-account coverage.
-4. Review and approve the recorded axe-core WCAG A/AA baseline before enforcing a no-regression gate.
+4. Collect the first English/French readability baseline before proposing numeric readability thresholds, and decide when the opt-in serious/critical axe gate should become a required CI check.
 5. Confirm the API health path and approved bilingual copy, then add a read-only API smoke check when its contract is available.
 6. Define measurable performance budgets before selecting browser timing or Lighthouse coverage.
