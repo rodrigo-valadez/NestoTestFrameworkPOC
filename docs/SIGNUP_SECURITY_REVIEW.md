@@ -19,3 +19,5 @@
 No high-severity repository or dependency issue was found in this bounded review. The populated sensitive-shaped optional account response field remains intentionally unidentified because the privacy guard did not retain its name or value. It needs secure review by the API owner before the response allowlist changes.
 
 No SQL injection, cross-site scripting, authentication bypass, rate-limit, account-enumeration, or other active security payload was sent. Those checks require service-owner authorization, a defined endpoint contract, monitoring, and cleanup. Application source analysis, infrastructure configuration, session-cookie flags, token claims, and server-side validation are outside the evidence available to this repository.
+
+An OWASP ZAP baseline runner is now present but disabled. It is excluded from default tests and CI, requires an explicit enable flag and allowlisted QA target, and has not been executed. See [Security automation](SECURITY_AUTOMATION.md).

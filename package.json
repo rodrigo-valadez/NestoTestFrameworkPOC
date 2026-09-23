@@ -19,6 +19,7 @@
     "test:framework": "cross-env TEST_ENV=self-contained LIVE_SUITE=framework playwright test tests/framework",
     "test:real-app": "cross-env LIVE_SUITE=real-app playwright test tests/real-app",
     "test:report:staging": "node scripts/publish-latest-staging-report.mjs",
+    "test:security:baseline": "node scripts/run-zap-baseline.mjs",
     "test:account-creation": "cross-env TEST_ENV=staging LIVE_SUITE=account-creation QA_ACCOUNT_CREATION=true playwright test",
     "test:api": "cross-env LIVE_SUITE=api playwright test tests/api",
     "test:chromium": "cross-env TEST_ENV=self-contained LIVE_SUITE=framework playwright test --project=chromium-en-CA --project=chromium-fr-CA",

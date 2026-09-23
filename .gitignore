@@ -1,6 +1,7 @@
 node_modules/
 playwright-report/
 test-results/
+security-results/
 .env
 test-data/scenarios/staging/
 test-data/scenarios/production/
