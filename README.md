@@ -4,6 +4,12 @@ A narrow Playwright + TypeScript foundation for maintainable UI and REST API tes
 
 For planned coverage, reporting, failure triage, and metrics, see [the test roadmap](docs/TEST_ROADMAP.md). Contributors and coding agents should follow [the repository test-writing guide](AGENTS.md).
 
+The signup flow has approved artifacts through the guarded [Stage 6 implementation handoff](docs/SIGNUP_IMPLEMENTATION_HANDOFF.md). Bounded QA investigation identified the deployed `POST /api/accounts` contract and observed one privacy-safe HTTP 201 response with submitted account information; see the current [Stage 7 result](docs/SIGNUP_RESULTS.md). Ten lifetime slots are consumed, ten remain, and further live execution is paused because the final observer found a populated sensitive-shaped optional response field. Read-only negative and accessibility coverage remains safe to run.
+
+For a repeatable feature-to-metrics handoff with human decisions and independent skeptical review, see the [agent test workflow](docs/AGENT_TEST_WORKFLOW.md) and [stage handoff template](docs/STAGE_HANDOFF_TEMPLATE.md).
+
+Challenge evidence is summarized in the [signup results](docs/SIGNUP_RESULTS.md), [accessibility baseline](docs/SIGNUP_ACCESSIBILITY_BASELINE.md), [static security review](docs/SIGNUP_SECURITY_REVIEW.md), and [bug report](docs/SIGNUP_BUG_REPORT.md). Assumptions and deferred cases remain explicit in the [signup test plan](docs/SIGNUP_TEST_PLAN.md).
+
 ## First implementation
 
 - Locale-specific `en-CA` and `fr-CA` projects across Chromium, Firefox, WebKit, and Microsoft Edge.
@@ -14,6 +20,8 @@ For planned coverage, reporting, failure triage, and metrics, see [the test road
 - An ordered `LocatorResolver` that records the successful strategy in test annotations and rejects ambiguous visible matches. It does not mutate selectors or use opaque healing.
 - Playwright's built-in `request` fixture is available for REST API tests without adding another client.
 - JSON-driven signup scenarios with runtime validation and a separate Playwright test per case.
+- A separately guarded QA account-creation project with a 20-attempt ledger, exclusive reservation lock, synthetic data, safe response correlation, artifact suppression, and stop-on-first-failure execution.
+- Read-only negative integration checks that abort any unexpected account request, plus an axe-core WCAG A/AA baseline in both locales and all three bundled browsers.
 
 Locator priority should remain: accessible role/label, stable attributes or test IDs, scoped relationships, text patterns, then structural CSS/XPath as a last resort.
 
@@ -84,6 +92,7 @@ The default configuration is failure-focused:
 - Local artifacts are written under `test-results/`; the HTML report is written under `playwright-report/`.
 - CI uploads both directories for 14 days, including failure screenshots, videos, and traces.
 - Test runner output is visible in the terminal and CI logs. Console warnings/errors and uncaught page errors are attached to failed tests from the app fixture after basic redaction. Treat these artifacts as potentially sensitive and do not put credentials or real personal data in test cases.
+- The write-capable signup project disables screenshots, video, traces, HTML reporting, and browser diagnostics. Its local ledger must also be marked executable after the Stage 6 human gate before a submission can occur.
 
 Run `corepack pnpm run clean` to remove local reports and test artifacts.
 
@@ -112,9 +121,9 @@ corepack pnpm run test:env staging
 corepack pnpm run test:env staging --project=chromium-en-CA
 ```
 
-`staging` maps to `https://app.qa.nesto.ca/signup`, as supplied by the project owner; the page's French link points to `/fr/signup`, which is configured separately. The command runs a read-only route smoke and one signup-language-switch case by default. The new case follows the EN/FR link and verifies the destination heading and email field; it does not submit the form. The API target and health path are not known yet, so `corepack pnpm run test:env staging api` fails closed until both are added to `config/environments/staging.json`. Production execution is intentionally disabled, including if someone sets `TEST_ENV=production` directly. `pnpm test` and CI continue to run only self-contained framework tests. The API smoke is a single browserless project; the UI suite runs across browser/locale projects.
+`staging` maps to `https://app.qa.nesto.ca/signup`, as supplied by the project owner; the page's French link points to `/fr/signup`, which is configured separately. The default staging run executes SGN-001 full-form contract, SGN-002 language switching, SGN-005 client-side email rejection, SGN-009 accessibility reporting, SGN-015 password mismatch, SGN-016 file-driven edge cases, and SGN-017 consent toggling across the configured browser/locale projects. Negative cases intercept and abort any unexpected `POST */accounts`; the known overlong-email defect is recorded as an expected failure. Account creation lives under `tests/real-app/account-creation/` but is excluded from ordinary staging runs and requires its dedicated capability, runtime constraints, and executable ledger. The API target and health path are not known yet, so `corepack pnpm run test:env staging api` fails closed until both are added to `config/environments/staging.json`. Production execution is intentionally disabled, including if someone sets `TEST_ENV=production` directly. `pnpm test` and CI continue to run only self-contained framework tests. The API smoke is a single browserless project; the UI suite runs across browser/locale projects.
 
-The environment file selects a matching `dataProfile`. Tests can request the `signupCases` fixture, which loads and validates `test-data/scenarios/<profile>/signup.json`. Only the synthetic self-contained profile is committed. Staging and production data directories are ignored by Git; add local files only after confirming the target environment's data policy and cleanup approach. No live test currently creates data. Keep secrets and personal data out of the versioned environment files.
+The environment file selects a matching `dataProfile`. Tests can request the `signupCases` fixture, which loads and validates `test-data/scenarios/<profile>/signup.json`. Synthetic self-contained and read-only real-app negative profiles are committed. Staging and production account data directories are ignored by Git. The final guarded signup confirmation reached the quote page, but its observer rejected the API response because a sensitive-shaped optional field was populated. Its local ledger is disabled after that ambiguous response-contract result. Keep secrets and personal data out of the versioned environment files.
 
 ## Structure
 
@@ -127,15 +136,15 @@ src/pages/                 task-oriented Page Objects
 test-data/expected-copy/   independently approved language baselines
 test-data/scenarios/       environment-selected JSON-driven test cases
 tests/framework/           self-contained framework contract tests
-tests/real-app/            opt-in read-only UI smoke tests
+tests/real-app/            opt-in deployed UI checks; account creation is separately gated
 tests/api/                 opt-in read-only API smoke tests
 ```
 
 ## Next increments
 
 1. Confirm the real signup route, health path, stable identity contracts, and approved bilingual copy.
-2. Add the first environment-backed signup journey and a focused workflow only if it crosses pages or branches; define test-account creation and cleanup policy first.
-3. Add `@axe-core/playwright` accessibility checks and agreed WCAG rules.
+2. Add the first environment-backed signup journey and a focused workflow only if it crosses pages or branches; define test-account creation and capped-retention or cleanup policy first.
+3. Review and approve the recorded axe-core WCAG A/AA baseline before enforcing a no-regression gate.
 4. Define measurable performance budgets before selecting browser timing or Lighthouse coverage.
 5. Add data builders and API setup/cleanup around concrete test cases.
 6. Add GitHub Actions and Jenkins stages only after the local suite and deployment environments are agreed.

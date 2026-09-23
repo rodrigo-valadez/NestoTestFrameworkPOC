@@ -19,6 +19,10 @@ test('loads the checked-in staging UI target without guessing an API endpoint', 
     capabilities: { realAppSmoke: true, accountCreation: false }
   });
   expect(loadEnvironmentConfig({ TEST_ENV: 'staging' }).apiBaseURL).toBeUndefined();
+  expect(
+    loadEnvironmentConfig({ TEST_ENV: 'staging', QA_ACCOUNT_CREATION: 'true' }).capabilities
+      .accountCreation
+  ).toBe(true);
 });
 
 test('rejects production, unknown targets, and unsafe configuration', () => {

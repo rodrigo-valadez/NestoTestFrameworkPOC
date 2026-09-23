@@ -1,0 +1,61 @@
+# Signup selector contract
+
+**Stage:** 4 — selector design. **Status:** approved for Stage 5, 2026-09-22. This document defines locator choices only; it does not implement or run a signup test.
+
+## Design rules
+
+- Prefer exact accessible labels or roles backed by typed `en-CA` and `fr-CA` copy.
+- Require exactly one visible match. Ambiguity is a failure, not a reason to choose `nth()`.
+- Use the existing `LocatorResolver` only when a genuine ordered fallback is required. Every fallback has a descriptive name and records the winning strategy.
+- Do not use generated-looking IDs such as `field-2`, positional selectors, forced clicks, fixed sleeps, or `.or()` as priority fallback.
+- Keep observed copy in locale fixtures rather than embedding English or French strings in `LiveSignupPage`.
+
+## Control contract
+
+| Control               | Primary locator                                                                                                                        | Ordered fallback                                                                          | Decision and risk                                                                                                                                                                                                                                    |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Page heading          | `getByRole('heading', { name: text.heading, exact: true })`                                                                            | None                                                                                      | Confirms page identity. Heading text already belongs in the locale baseline.                                                                                                                                                                         |
+| First name            | `getByLabel(text.firstNameLabel, { exact: true })`                                                                                     | `input[name="firstName"]` only if a documented label defect blocks interaction            | Semantic label was unique in EN and FR. A fallback must not make the accessibility check pass.                                                                                                                                                       |
+| Last name             | `getByLabel(text.lastNameLabel, { exact: true })`                                                                                      | `input[name="lastName"]` under the same condition                                         | Semantic label was unique in EN and FR.                                                                                                                                                                                                              |
+| Phone country         | `getByRole('combobox', { name: text.phoneCountryAccessibleName, exact: true })`, using separately approved expected accessibility copy | `select[name="phoneCountry"]` for functional interaction                                  | SGN-009 uses the expected French name and must fail/report while QA exposes English. Functional tests may use the annotated stable-name fallback without treating it as an accessibility pass or approving the observed English text as French copy. |
+| Phone number          | `getByLabel(text.phoneLabel, { exact: true })`                                                                                         | `input[name="phone"]` only if a documented label defect blocks interaction                | Semantic label was unique in EN and FR.                                                                                                                                                                                                              |
+| Province              | `getByRole('combobox', { name: text.provinceLabel, exact: true })`                                                                     | Scoped `select[aria-label="region"]`                                                      | The semantic locator was unique in both locales. The fallback is lower quality because “region” is generic and English; annotate it if used. Do not assert a default province until Stage 5 defines the data contract.                               |
+| Email                 | `getByLabel(text.emailLabel, { exact: true })`                                                                                         | `input[name="email"]` only if a documented label defect blocks interaction                | Semantic label was unique in EN and FR. The observed input type is text, so do not rely on `input[type="email"]`.                                                                                                                                    |
+| Password              | `getByLabel(text.passwordLabel, { exact: true })`                                                                                      | `input[name="password"]` only if a documented label defect blocks interaction             | Exact matching prevents collision with confirmation. Never annotate or log its value.                                                                                                                                                                |
+| Password confirmation | `getByLabel(text.passwordConfirmationLabel, { exact: true })`                                                                          | `input[name="passwordConfirmation"]` only if a documented label defect blocks interaction | Semantic label was unique in EN and FR. Never annotate or log its value.                                                                                                                                                                             |
+| Partner consent       | `getByRole('checkbox', { name: text.partnerConsentLabel, exact: true })`                                                               | `input[name="leadDistributeConsentAgreement"]`                                            | Use reviewed full locale copy for the accessible-name contract. The observed form-name fallback is descriptive but must remain ordered and annotated.                                                                                                |
+| Submit                | `getByRole('button', { name: text.submitButton, exact: true })`                                                                        | None                                                                                      | Unique semantic locator. No forced click.                                                                                                                                                                                                            |
+| Language switch       | `getByRole('link', { name: text.languageSwitchLabel, exact: true })`                                                                   | None                                                                                      | Already implemented and unique in both locales. The destination path is asserted separately.                                                                                                                                                         |
+
+## Verification evidence
+
+On 2026-09-22, read-only checks against both deployed locale routes found exactly one match for the proposed semantic first name, last name, phone, province, email, password, password-confirmation, consent, submit, and language-switch controls. The phone-country selector also had one match under its currently observed English accessible name in both locales. No values were entered and no submission occurred.
+
+Every retained fallback was also checked read-only in EN and FR. Each of `input[name="firstName"]`, `input[name="lastName"]`, `select[name="phoneCountry"]`, `input[name="phone"]`, `select[aria-label="region"]`, `input[name="email"]`, `input[name="password"]`, `input[name="passwordConfirmation"]`, and `input[name="leadDistributeConsentAgreement"]` had exactly one visible match on each route. These dated observations establish current uniqueness; the runtime resolver must still reject later ambiguity.
+
+A later read-only check observed Alberta selected on both locale routes within the shared browser context. This did not reproduce the earlier EN/FR difference and does not establish a default. Selector design therefore treats province value as test data, not page identity.
+
+## Page Object boundary
+
+`LiveSignupPage` should expose task-level operations for opening the page, reading or entering individual visible fields, choosing province/country, setting consent, and submitting through a `submit()` action. It should not return a raw submit locator or own account-budget reservation, synthetic identity generation, response evidence, or multi-page conditional behavior. Those belong to Stage 5 data/lifecycle design and, if branching is confirmed, a focused Stage 6 signup workflow. A workflow or test can coordinate response observation around the `submit()` promise without receiving the locator.
+
+Adding these fields to the existing typed locale copy is expected. No new selector abstraction is needed: use direct semantic locators for the verified unique controls and the existing `LocatorResolver` for the three documented fallback families only.
+
+## Stage 4 handoff
+
+- **Prepared by:** Codex selector designer, 2026-09-22.
+- **Evidence:** deployed EN/FR accessibility and DOM inventory from Stage 3 plus read-only uniqueness counts for the proposed semantic locators.
+- **Choices:** semantic exact-match locators first; limited named fallbacks for field-name, province, and consent contracts; generated IDs and positional selection rejected.
+- **Validation:** read-only EN/FR checks found exactly one semantic match per proposed control and exactly one visible match for every retained fallback. The historical two-attempt budget was untouched at this stage; it was later superseded by the 2026-09-23 Stage 6 amendment to 20 serial SGN-006 attempts.
+- **Skeptical review:** independent reviewer, 2026-09-22. The initial review identified unverified fallbacks, ambiguity between expected and observed French accessibility copy, a raw-locator Page Object leak, and missing review/validation bookkeeping. The artifact was corrected and its fallback evidence was expanded. The reviewer rechecked content revision `87bcd767df05ac628abf7eb2993323e674b6d494` and reported no remaining actionable findings.
+- **Unresolved:** product-approved French phone-country accessible name and consent copy; whether any fallback is necessary after implementation; province default behavior, which belongs to the data contract rather than selector identity.
+- **No execution claim:** no Page Object was changed, no data was entered, and no account attempt was consumed.
+- **Recommended next step:** after human approval, Stage 5 defines synthetic data, ledger ownership, retention, reconciliation, and artifact protection using this selector contract.
+
+### Human decision
+
+- **Decision requested from:** requesting user.
+- **Decision requested:** approve this selector contract for Stage 5 data/lifecycle design, request revision, or pause.
+- **Decision:** approved for Stage 5 data and lifecycle design.
+- **Decision maker, date, and reviewed revision:** requesting user, 2026-09-22, after explicitly stating “I approve this Signup Selector Contract.”
+- **Conditions:** design work only. No account submission or implementation is authorized until the Stage 5 lifecycle is approved and Stage 6 implements the guarded test.

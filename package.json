@@ -18,6 +18,7 @@
     "test:env": "node scripts/run-tests.mjs",
     "test:framework": "cross-env TEST_ENV=self-contained LIVE_SUITE=framework playwright test tests/framework",
     "test:real-app": "cross-env LIVE_SUITE=real-app playwright test tests/real-app",
+    "test:account-creation": "cross-env TEST_ENV=staging LIVE_SUITE=account-creation QA_ACCOUNT_CREATION=true playwright test",
     "test:api": "cross-env LIVE_SUITE=api playwright test tests/api",
     "test:chromium": "cross-env TEST_ENV=self-contained LIVE_SUITE=framework playwright test --project=chromium-en-CA --project=chromium-fr-CA",
     "test:edge": "cross-env TEST_ENV=self-contained LIVE_SUITE=framework PLAYWRIGHT_INCLUDE_EDGE=true playwright test --project=edge-en-CA --project=edge-fr-CA",
@@ -32,6 +33,7 @@
     "*.{json,jsonc,md,yml,yaml}": "prettier --check"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.55.0",
     "@types/node": "^24.3.0",

@@ -2,10 +2,22 @@
 
 Applies to this repository. Read `README.md` and `docs/TEST_ROADMAP.md` before adding cases. Inspect the current implementation and target page/API; do not infer a live contract from the self-contained demo. Keep a new case focused on one behavior with a clear expected outcome and, when the roadmap's ID scheme is implemented, a stable case ID.
 
+## Agent-driven feature planning
+
+Follow [the agent test workflow](docs/AGENT_TEST_WORKFLOW.md) for role handoffs, explicit human stage decisions, and independent skeptical review. End each stage with the [handoff summary](docs/STAGE_HANDOFF_TEMPLATE.md). A reviewer challenges gaps and unnecessary complexity, records evidence-linked findings, and cannot approve product decisions or bypass environment guards. Do not start a dependent next stage while its human gate is pending.
+
+For Stage 1 feature analysis, use the repo-local [`feature-brief` skill](.agents/skills/feature-brief/SKILL.md); it produces an evidence-based brief and leaves unknown product requirements for a human owner. The [signup feature brief](docs/SIGNUP_FEATURE_BRIEF.md) is the first example under this workflow.
+
+Before adding coverage for a feature, create or update its reviewable plan under `docs/` using [the signup feature test plan](docs/SIGNUP_TEST_PLAN.md) as the current example. The agent owns the evidence gathering and draft: inspect repository state, existing tests, Page Objects, fixtures, environment guards, data, approved requirements, and the target contract when access is authorized. Record what was observed, what is inferred, and what still needs an owner decision. A plan is a proposed inventory, not permission to run a test or evidence that coverage exists.
+
+For each proposed case, provide a stable proposed ID, priority, one behavior and expected outcome, prerequisites and synthetic data, type/purpose/environment classifications from the roadmap, browser/locale scope, and a clear ready/blocked state. Map existing coverage without calling a self-contained check a live test. Identify missing API routes, approved copy, account lifecycle and cleanup, quality budgets, and business acceptance criteria explicitly. Include the planned Page Object/workflow boundary, selector and locale strategy, report metadata, triage, and measurement links when relevant.
+
+Keep feature plans discoverable from `README.md`. Update the plan when evidence or decisions change; preserve IDs when their meaning stays the same, and document any split or retirement. Ask the responsible owner to approve product requirements and UAT outcomes rather than treating an agent draft as approved. Implement only cases whose contracts and safety prerequisites are met. In the handoff, list changed files, sources inspected, checks actually run, unresolved decisions, and whether any live target was contacted.
+
 ## Safety and scope
 
 - Default to `self-contained`. Run live tests only through the explicit staging command. Production execution is disabled; a future `production` tag or route must not bypass that guard.
-- Existing staging cases are read-only. Do not submit signup forms, create accounts, mutate APIs, or use real personal data without an approved account/data lifecycle and cleanup plan.
+- Existing staging cases are read-only. The human approver permits future QA account creation with capped persistent synthetic accounts, but no write-capable case may run until its lifecycle specifies a cap, unique data, ownership, a ledger, and retention or cleanup. Never use real personal data.
 - Never commit credentials, cookies, tokens, real customer data, or sensitive screenshots. Treat traces, videos, console output, and HTML reports as potentially sensitive. Preserve the existing redaction and failure-only artifact behavior.
 - Do not claim that a test covers a live environment unless it actually ran there. Separate static checks, test discovery, self-contained runs, and live QA results in the handoff.
 
@@ -28,11 +40,11 @@ Applies to this repository. Read `README.md` and `docs/TEST_ROADMAP.md` before a
 
 - Use synthetic, non-sensitive JSON cases under `test-data/scenarios/<profile>/` and select them through the environment/data-profile fixture. The existing example is `test-data/scenarios/self-contained/signup.json` with validation in `src/test-data/signup-cases.ts`.
 - For a new case shape, add a typed parser that validates JSON at the boundary, rejects malformed/duplicate IDs, and fails before test execution. Keep one named data case visible as one test result when practical.
-- Staging and production scenario directories are ignored by Git. Do not add live data files or write-capable tests until data ownership, consent, and cleanup are approved.
+- Staging and production scenario directories are ignored by Git. Do not add live data files or enable write-capable tests until data ownership, consent, and an approved capped-retention or cleanup plan are documented.
 
 ## Before a PR or handoff
 
-- Run `pnpm run check:static` and the relevant self-contained tests; run a staging case only when it is read-only and the target is configured. Report exact pass/fail counts and constraints.
-- Preserve screenshots, videos, and traces on failure; do not broaden artifact capture or retention without considering privacy and cost.
+- Run `pnpm run check:static` and the relevant self-contained tests. Existing staging cases are read-only; run a future write-capable case only with its documented lifecycle and explicit environment capability. Report exact pass/fail counts and constraints.
+- Preserve screenshots, videos, and traces on ordinary test failures. Write-capable cases follow their approved privacy design and may disable those artifacts when entered secrets could be exposed.
 - Explain the case's purpose, test data, selector choice, alternatives/tradeoffs, validation, and any unresolved contract. Include visual/video evidence for visible page changes; documentation-only changes may say visual evidence is not applicable.
 - Update the roadmap only when acceptance criteria are met. Do not mark a proposed reporter, tag, metric, or TestOps integration as delivered because it appears in a document.
