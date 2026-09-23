@@ -18,7 +18,7 @@ The QA pages were viewed without entering data or submitting forms. Two observat
 ## Human-supplied test goals
 
 - Cover the full visible signup form and consent controls, not only email. The critical positive end-to-end case creates a QA account. Its expected account-creation response is HTTP 201 and includes submitted information; compare only safe fields and explicitly exclude password, password confirmation, tokens, and other secrets from response assertions and reports.
-- Cover English/French language change, repeated email/duplicate-account behavior, empty and invalid email, invalid password, overlong email, and other invalid field entries. Agents should **discover actual UI responses** through authorized observation before fixing negative-case assertions or flagging a concern.
+- Cover English/French language change, repeated email/duplicate-account behavior, empty and invalid email, invalid password, email length limits, and other invalid field entries. Agents should **discover actual UI responses** through authorized observation before fixing negative-case assertions or flagging a concern.
 - Drive selected edge cases from a synthetic JSON file, with stable named cases visible as separate test results.
 - Produce an accessibility report with violations and severity. After a human reviews a QA baseline, propose a gate that prevents degradation from it. Readability remains in scope but needs a later locale-aware method and threshold.
 - In the first pass, perform a basic static review of potential security concerns and safe test ideas. Do **not** run SQL-injection probes or other active security tests now. This repository lacks application source, so it cannot support source-level security analysis of the application.

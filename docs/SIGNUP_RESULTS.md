@@ -14,7 +14,7 @@
 - **Skeptical review:** Independent reviewer, 2026-09-23. Reviews drove durable ledger disabling, exact suite isolation, full envelope inspection, structured request correlation, strict Canadian phone normalization, trimmed identifiers, populated-sensitive-field rejection, unknown-field rejection, and current bookkeeping. The reviewer completed the focused recheck after the 19/19 validation and reported no remaining code or privacy blocker.
 - **Human decision, 2026-09-23:** The requesting user approved completing the remaining challenge coverage after reviewing the observed `{ account, token }` contract and the proposal for one ordinary guarded SGN-006 confirmation. The local ignored ledger was re-enabled for exactly one confirmation attempt under the existing 20-attempt lifetime cap.
 - **Final confirmation outcome:** The approved ordinary SGN-006 confirmation consumed attempt 10. The UI reached `/getaquote`, which is strong evidence that account creation completed, but the observer returned `sensitive-response-data` because an optional sensitive-shaped account field was populated. No field name or value, raw body, token, password, identity, screenshot, trace, or video was retained. The ledger automatically returned to disabled and no further write was attempted.
-- **Read-only completion:** SGN-005 empty and malformed email, SGN-015 confirmation mismatch, SGN-016 weak password, and SGN-009 axe-core scans passed across six browser/locale projects. The overlong-email case attempted the account API in all six projects; every request was intercepted before leaving the browser and the behavior is recorded as `BUG-SIGNUP-002`.
+- **Read-only completion:** SGN-005 empty and malformed email, SGN-015 confirmation mismatch, SGN-016 weak password, and SGN-009 axe-core scans passed across six browser/locale projects. The email-exceeds-standard-length case attempted the account API in all six projects; every request was intercepted before leaving the browser and the behavior is recorded as `BUG-SIGNUP-002`.
 - **Static security review:** The locked dependency audit reported no known vulnerabilities. Repository checks found no private-key, API-key-name, or client-secret-name matches, no `eval` or `new Function`, and confirmed production, live-write, artifact, and response-secret guards. No active attack payload was sent.
 - **Recommended next step:** Review the populated optional account response field with the API owner through an approved secure channel before changing the observer or re-enabling live writes. Keep duplicate-account testing deferred until account-state reconciliation exists.
 
@@ -27,6 +27,7 @@
 | Observed API 201               |     1 |
 | Observed API 422               |     2 |
 | Other uncertain investigations |     6 |
+| Privacy-stopped confirmation   |     1 |
 | Ledger state `ambiguous`       |    10 |
 | Unused lifetime slots          |    10 |
 | Confirmed email deliveries     |     0 |

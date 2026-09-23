@@ -7,6 +7,7 @@ const environment = loadEnvironmentConfig();
 const locales: readonly SupportedLocale[] = ['en-CA', 'fr-CA'];
 const includeEdge = process.env.PLAYWRIGHT_INCLUDE_EDGE === 'true';
 const liveSuite = process.env.LIVE_SUITE ?? 'framework';
+const publishLatestReport = process.env.PUBLISH_LATEST_REPORT === 'true';
 
 if (!['framework', 'real-app', 'api', 'account-creation'].includes(liveSuite)) {
   throw new Error(`Unsupported LIVE_SUITE: ${liveSuite}`);
@@ -41,7 +42,16 @@ export default defineConfig({
   retries: liveSuite === 'account-creation' ? 0 : process.env.CI ? 2 : 0,
   maxFailures: liveSuite === 'account-creation' ? 1 : 0,
   workers: liveSuite === 'account-creation' ? 1 : undefined,
-  reporter: liveSuite === 'account-creation' ? [['list']] : [['list'], ['html', { open: 'never' }]],
+  reporter:
+    liveSuite === 'account-creation'
+      ? [['list']]
+      : [
+          ['list'],
+          ['html', { open: 'never' }],
+          ...(publishLatestReport
+            ? ([['json', { outputFile: 'test-results/latest-report.json' }]] as const)
+            : [])
+        ],
   use: {
     baseURL: environment.uiBaseURL,
     screenshot: liveSuite === 'account-creation' ? 'off' : 'only-on-failure',
