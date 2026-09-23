@@ -8,7 +8,7 @@ These questions are ordered by how much their answers would change the test desi
 2. Which submitted fields must be echoed, and which account fields are intentionally populated even though the user did not enter them?
 3. Is returning a token directly from signup expected, and which response fields should never appear for privacy or security reasons?
 4. What are the supported maximum lengths and normalization rules for email, name, and phone fields?
-5. Should an overlong email be rejected in the browser, by the API with a specific 4xx response, or both? Is the current generic error expected?
+5. Should an email exceeding standard length limits be rejected in the browser, by the API with a specific 4xx response, or both? Is the current generic error expected?
 6. What is the intended duplicate-email status code and user-facing response? Should the response avoid revealing that an account exists?
 
 ## Test accounts and environment lifecycle

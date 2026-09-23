@@ -11,7 +11,7 @@
 | Dynamic code execution          | No `eval` or `new Function` use was found. The test runner uses `spawnSync` with `shell: false` and a fixed Playwright CLI path.                                                                                                            |
 | Environment isolation           | Production selection throws before configuration or test execution. Live account creation requires staging, an explicit capability environment variable, one approved project, serial execution, no retry, and an executable capped ledger. |
 | Secret-bearing artifacts        | Account-creation runs disable screenshots, video, traces, HTML reporting, and browser diagnostics. The response observer rejects secret-shaped keys and does not inspect or persist the token value.                                        |
-| Request safety                  | Read-only negative cases intercept and abort unexpected account-creation requests. The overlong-email finding was reproduced without sending any of its six attempted writes.                                                               |
+| Request safety                  | Read-only negative cases intercept and abort unexpected account-creation requests. The excessive-length email finding was reproduced without sending any of its six attempted writes.                                                       |
 | Browser-visible controls        | Password fields use `type=password` but expose `autocomplete=off`; visible controls did not expose HTML `required` or `maxlength` constraints during Stage 3 inspection. These are review concerns, not standalone vulnerability claims.    |
 
 ## Findings and limits

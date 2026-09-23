@@ -126,7 +126,7 @@ test('SGN-015 password confirmation mismatch is rejected before the API @real-ap
 
 for (const scenario of loadLiveSignupNegativeCases()) {
   const input = edgeInput(scenario);
-  const expectedFailure = scenario.id === 'overlong-email';
+  const expectedFailure = scenario.id === 'email-exceeds-standard-length';
 
   test(`SGN-016/${scenario.id} file-driven edge input is rejected before the API @real-app`, async ({
     liveSignupPage,
@@ -135,7 +135,7 @@ for (const scenario of loadLiveSignupNegativeCases()) {
   }) => {
     test.fail(
       expectedFailure,
-      'BUG-SIGNUP-002: overlong email currently reaches the account-creation API.'
+      'BUG-SIGNUP-002: email exceeding standard length limits reaches the account API.'
     );
     const attempts = await preventAccountCreation(page);
     await liveSignupPage.completeForm({
