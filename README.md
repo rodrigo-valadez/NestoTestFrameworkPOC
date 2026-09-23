@@ -8,7 +8,7 @@ The signup flow has approved artifacts through the guarded [Stage 6 implementati
 
 For a repeatable feature-to-metrics handoff with human decisions and independent skeptical review, see the [agent test workflow](docs/AGENT_TEST_WORKFLOW.md) and [stage handoff template](docs/STAGE_HANDOFF_TEMPLATE.md).
 
-Challenge evidence is summarized in the [signup results](docs/SIGNUP_RESULTS.md), [coverage depth](docs/SIGNUP_COVERAGE_DEPTH.md), [accessibility baseline](docs/SIGNUP_ACCESSIBILITY_BASELINE.md), [static security review](docs/SIGNUP_SECURITY_REVIEW.md), and [bug report](docs/SIGNUP_BUG_REPORT.md). The [reporting guide](docs/TEST_REPORTING.md) explains local and CI output. Assumptions and deferred cases remain explicit in the [signup test plan](docs/SIGNUP_TEST_PLAN.md).
+Challenge evidence is summarized in the [signup results](docs/SIGNUP_RESULTS.md), [coverage depth](docs/SIGNUP_COVERAGE_DEPTH.md), [accessibility baseline](docs/SIGNUP_ACCESSIBILITY_BASELINE.md), [static security review](docs/SIGNUP_SECURITY_REVIEW.md), and [bug report](docs/SIGNUP_BUG_REPORT.md). The [reporting guide](docs/TEST_REPORTING.md) explains local, CI, and the single committed latest report. [Questions for Nesto](docs/NESTO_CHALLENGE_QUESTIONS.md) records the decisions that would materially change scope or expectations. Assumptions and deferred cases remain explicit in the [signup test plan](docs/SIGNUP_TEST_PLAN.md).
 
 ## First implementation
 
