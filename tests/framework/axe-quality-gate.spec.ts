@@ -2,7 +2,8 @@ import { expect, test } from '@playwright/test';
 import {
   evaluateAxeGate,
   type AxeImpact,
-  type ObservedAxeFinding
+  type ObservedAxeFinding,
+  parseAxeBaseline
 } from '../../src/accessibility/axe-quality-gate';
 
 const baseline = {
@@ -30,7 +31,7 @@ test('axe quality gate blocks new or worsened serious and critical findings', ()
     { ruleId: 'new-rule', target: '#new', impact: 'serious' }
   ];
 
-  const result = evaluateAxeGate('chromium-en-CA', observed, baseline);
+  const result = evaluateAxeGate('chromium-en-CA', observed, baseline, '2026-09-23');
 
   expect(result.blocking).toEqual(observed);
   expect(result.accepted).toEqual([]);
@@ -42,9 +43,42 @@ test('axe quality gate reports lower impacts and accepts unchanged recorded find
     { ruleId: 'minor-rule', target: '#minor', impact: 'minor' }
   ];
 
-  const result = evaluateAxeGate('chromium-en-CA', observed, baseline);
+  const result = evaluateAxeGate('chromium-en-CA', observed, baseline, '2026-09-23');
 
   expect(result.blocking).toEqual([]);
   expect(result.accepted).toEqual([observed[0]]);
   expect(result.reportedOnly).toEqual([observed[1]]);
+});
+
+test('axe quality gate rejects expired records', () => {
+  const expired = {
+    ...baseline,
+    findings: [{ ...baseline.findings[0], reviewBy: '2026-09-22' }]
+  };
+
+  const finding: ObservedAxeFinding = {
+    ruleId: 'known-rule',
+    target: '#known',
+    impact: 'serious'
+  };
+
+  expect(evaluateAxeGate('chromium-en-CA', [finding], expired, '2026-09-23').blocking).toEqual([
+    finding
+  ]);
+});
+
+test('axe baseline rejects blank governance fields and duplicate records', () => {
+  expect(() =>
+    parseAxeBaseline({
+      ...baseline,
+      findings: [{ ...baseline.findings[0], reason: ' ' }]
+    })
+  ).toThrow('invalid fields');
+
+  expect(() =>
+    parseAxeBaseline({
+      ...baseline,
+      findings: [baseline.findings[0], { ...baseline.findings[0] }]
+    })
+  ).toThrow('duplicates an earlier record');
 });

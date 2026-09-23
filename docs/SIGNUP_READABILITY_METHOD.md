@@ -21,6 +21,24 @@ Do not combine English and French or merge labels and validation messages into t
 
 WCAG 2.1 AA does not impose a numeric reading-level threshold. WCAG 2.1 reading level is a Level AAA criterion, so this repository must describe readability scoring as a product quality gate rather than claim that the formula proves AA conformance.
 
+Use these exact formulas, where `ASL = words / sentences` and `ASW = syllables / words`:
+
+- English Flesch Reading Ease: `206.835 - (1.015 × ASL) - (84.6 × ASW)`.
+- English Flesch–Kincaid Grade Level: `(0.39 × ASL) + (11.8 × ASW) - 15.59`.
+- French Kandel–Moles: `207 - (1.015 × ASL) - (73.6 × ASW)`.
+
+## Deterministic collection and counting contract
+
+The implementation must be local and versioned with golden fixtures; it must not send deployed copy to an external scoring service.
+
+- Normalize collected text to Unicode NFC, replace nonbreaking space with ordinary space, collapse whitespace, and preserve the displayed spelling and punctuation in evidence.
+- Use `Intl.Segmenter` from the repository's pinned Node runtime with the matching `en-CA` or `fr-CA` locale for word and sentence segmentation. Count only `isWordLike` word segments.
+- Implement and version language-specific syllable counters in this repository. Count contiguous vowel sounds with documented English and French rules, silent-ending adjustments, and a minimum of one syllable per word. Lock representative names, mortgage terms, contractions, accented words, and exception words in golden fixtures. The implementation handoff must record the Node version and fixture results; formula output is blocked until these counters exist.
+- Wait for page hydration and collect visible rendered text from headings, paragraphs, lists, legends, labels, buttons, links, placeholders, currently displayed feedback, and every option in native selects. Exclude hidden templates, scripts, styles, and accessible-only names that have no visible text because those belong to the accessibility contract.
+- Exercise the initial page plus every read-only validation state already covered by SGN-005, SGN-015, and SGN-016. Do not send an account request to discover text. A validation state that cannot be reached without a write is recorded as blocked rather than silently omitted.
+- Deduplicate by locale, state, category, normalized text, and semantic source. Retain an occurrence count so responsive duplicates remain auditable without weighting the formula twice.
+- Attach a manifest with locale, page state, category, semantic source, normalized text, occurrence count, and content hash. This manifest is the proof that every safely reachable page string entered a corpus.
+
 ## Short labels and validation messages
 
 Sentence-based readability formulas are unstable for individual short strings. For labels/actions and validation messages:
@@ -28,7 +46,7 @@ Sentence-based readability formulas are unstable for individual short strings. F
 - preserve and report every string separately;
 - report characters, words, sentences, syllables, and the locale-specific score when it can be calculated;
 - calculate a separate aggregate score for the complete labels/actions corpus and validation-message corpus in each locale;
-- mark a corpus too small for a stable formula result rather than manufacturing a pass/fail score;
+- calculate but mark a corpus below 100 words as `small-sample`; never enforce a pass/fail threshold from that score alone;
 - keep wording defects visible even when the aggregate score passes.
 
 This approach will expose changes such as a much longer label or validation message without pretending that a one-word field name has a meaningful grade level.

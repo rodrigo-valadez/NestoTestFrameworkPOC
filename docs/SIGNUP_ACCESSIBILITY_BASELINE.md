@@ -18,7 +18,7 @@ The human QA approver accepted this baseline on 2026-09-23 for **WCAG 2.1 AA** a
 
 - Continue reporting every axe violation and severity.
 - Fail the automated gate only for a new `serious` or `critical` finding, or when a recorded finding worsens to one of those impacts.
-- Store accepted pre-existing findings and explicit exceptions in [`test-data/accessibility/signup-axe-baseline.json`](../test-data/accessibility/signup-axe-baseline.json), including project, rule, target, recorded impact, disposition, reason, owner, and review date.
+- Store accepted pre-existing findings and explicit exceptions in [`test-data/accessibility/signup-axe-baseline.json`](../test-data/accessibility/signup-axe-baseline.json), including project, rule, target, recorded impact, disposition, nonblank reason, nonblank owner, and ISO review date. Duplicate records, malformed dates, and blank governance fields fail validation; an expired record stops suppressing the finding.
 - Keep the current zero-violation result as the initial approved axe baseline. The registry therefore starts empty.
 - Do not add manual accessibility checks to this gate at this time.
 
@@ -28,4 +28,4 @@ This gate covers only rules detectable by axe-core on the initial page state. Th
 
 ## Gate verification
 
-On 2026-09-23, the complete read-only staging suite passed 54/54 after the gate was added. All six SGN-009 browser/locale executions again returned an empty axe violation list, so the current observed value remains **zero violation rules** and the empty registry is consistent with QA. Focused self-contained gate checks also passed 2/2, covering new, worsened, accepted, and report-only impact behavior. No account write occurred.
+The committed sanitized report initially recorded 54/54 expected outcomes and empty violation lists for all six SGN-009 browser/locale executions before enforcement was added. After the gate was implemented, a local read-only rerun on 2026-09-23 again completed 54/54 with empty axe lists, and focused self-contained checks passed 4/4. Those local observations are not durable report evidence for revision `47fef60`; the committed report must be regenerated from a revision containing the gate before the repository claims audited post-gate execution. No account write occurred.

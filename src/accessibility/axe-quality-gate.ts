@@ -10,7 +10,7 @@ export interface ObservedAxeFinding {
   target: string;
 }
 
-interface RecordedAxeFinding {
+export interface RecordedAxeFinding {
   project: string;
   ruleId: string;
   target: string;
@@ -22,7 +22,7 @@ interface RecordedAxeFinding {
   issue?: string;
 }
 
-interface AxeBaseline {
+export interface AxeBaseline {
   schemaVersion: 1;
   standard: 'WCAG 2.1 AA';
   failingImpacts: AxeImpact[];
@@ -43,7 +43,16 @@ function isImpact(value: unknown): value is AxeImpact {
   return typeof value === 'string' && impacts.includes(value as AxeImpact);
 }
 
-function parseBaseline(value: unknown): AxeBaseline {
+function isNonBlankString(value: unknown): value is string {
+  return typeof value === 'string' && value.trim().length > 0;
+}
+
+function isIsoDate(value: unknown): value is string {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  return new Date(`${value}T00:00:00.000Z`).toISOString().slice(0, 10) === value;
+}
+
+export function parseAxeBaseline(value: unknown): AxeBaseline {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
     throw new Error('Accessibility baseline must be an object.');
   }
@@ -53,7 +62,7 @@ function parseBaseline(value: unknown): AxeBaseline {
     candidate.standard !== 'WCAG 2.1 AA' ||
     !Array.isArray(candidate.failingImpacts) ||
     !candidate.failingImpacts.every(isImpact) ||
-    typeof candidate.approvedBaselineDate !== 'string' ||
+    !isIsoDate(candidate.approvedBaselineDate) ||
     !Array.isArray(candidate.findings)
   ) {
     throw new Error('Accessibility baseline metadata is invalid.');
@@ -65,20 +74,28 @@ function parseBaseline(value: unknown): AxeBaseline {
     }
     const finding = entry as Record<string, unknown>;
     if (
-      typeof finding.project !== 'string' ||
-      typeof finding.ruleId !== 'string' ||
-      typeof finding.target !== 'string' ||
+      !isNonBlankString(finding.project) ||
+      !isNonBlankString(finding.ruleId) ||
+      !isNonBlankString(finding.target) ||
       !isImpact(finding.impact) ||
       (finding.disposition !== 'pre-existing' && finding.disposition !== 'exception') ||
-      typeof finding.reason !== 'string' ||
-      typeof finding.owner !== 'string' ||
-      typeof finding.reviewBy !== 'string' ||
-      (finding.issue !== undefined && typeof finding.issue !== 'string')
+      !isNonBlankString(finding.reason) ||
+      !isNonBlankString(finding.owner) ||
+      !isIsoDate(finding.reviewBy) ||
+      (finding.issue !== undefined && !isNonBlankString(finding.issue))
     ) {
       throw new Error(`Accessibility finding ${index} has invalid fields.`);
     }
     return finding as unknown as RecordedAxeFinding;
   });
+  const keys = new Set<string>();
+  for (const [index, finding] of findings.entries()) {
+    const findingKey = `${finding.project}\u0000${finding.ruleId}\u0000${finding.target}`;
+    if (keys.has(findingKey)) {
+      throw new Error(`Accessibility finding ${index} duplicates an earlier record.`);
+    }
+    keys.add(findingKey);
+  }
 
   return {
     schemaVersion: 1,
@@ -90,7 +107,7 @@ function parseBaseline(value: unknown): AxeBaseline {
 }
 
 export function loadSignupAxeBaseline(): AxeBaseline {
-  return parseBaseline(JSON.parse(readFileSync(baselinePath, 'utf8')) as unknown);
+  return parseAxeBaseline(JSON.parse(readFileSync(baselinePath, 'utf8')) as unknown);
 }
 
 function key(ruleId: string, target: string): string {
@@ -104,7 +121,8 @@ function impactRank(impact: AxeImpact): number {
 export function evaluateAxeGate(
   project: string,
   observed: ObservedAxeFinding[],
-  baseline = loadSignupAxeBaseline()
+  baseline = loadSignupAxeBaseline(),
+  asOf = new Date().toISOString().slice(0, 10)
 ): AxeGateResult {
   const records = baseline.findings.filter(finding => finding.project === project);
   const recordedByKey = new Map(
@@ -122,7 +140,11 @@ export function evaluateAxeGate(
     }
 
     const recorded = recordedByKey.get(key(finding.ruleId, finding.target));
-    if (recorded && impactRank(finding.impact) <= impactRank(recorded.impact)) {
+    if (
+      recorded &&
+      recorded.reviewBy >= asOf &&
+      impactRank(finding.impact) <= impactRank(recorded.impact)
+    ) {
       accepted.push(finding);
     } else {
       blocking.push(finding);
