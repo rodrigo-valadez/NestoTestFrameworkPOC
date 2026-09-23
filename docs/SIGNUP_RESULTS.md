@@ -27,6 +27,7 @@
 | Observed API 201               |     1 |
 | Observed API 422               |     2 |
 | Other uncertain investigations |     6 |
+| Privacy-stopped confirmation   |     1 |
 | Ledger state `ambiguous`       |    10 |
 | Unused lifetime slots          |    10 |
 | Confirmed email deliveries     |     0 |
