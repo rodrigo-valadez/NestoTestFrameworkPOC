@@ -1,6 +1,6 @@
 # Signup guarded implementation handoff
 
-**Stage:** 6 — test implementation. **Status:** approved and executed within the 20-attempt limit, 2026-09-23. One QA form was submitted; its result was ambiguous, so the guarded runner stopped before the remaining 19 attempts.
+**Stage:** 6 — test implementation. **Status:** approved and executed within the 20-attempt limit, 2026-09-23. Stage 7 later consumed ten slots in total: nine bounded investigation attempts and one ordinary guarded confirmation. The local ledger is disabled with ten unused slots.
 
 ## Implemented behavior
 
@@ -24,15 +24,15 @@ Execution requires all of these conditions:
 4. The dedicated Chromium/en-CA project.
 5. An approved local ledger whose `executable` value is `true` and that has an available slot.
 
-Before execution, the checked local ledger was executable under the explicit 2026-09-23 Stage 6 approval and began with zero attempts. After the first attempt became ambiguous, the ledger was disabled. The default suite and CI remain self-contained, and production remains rejected.
+Before the initial Stage 6 execution, the checked local ledger was executable under the explicit 2026-09-23 approval and began with zero attempts. The first attempt became ambiguous and disabled the ledger. Later explicitly reviewed Stage 7 work used nine more reservations. The current ledger is disabled with ten consumed and ten unused slots. The default suite and CI remain self-contained, and production remains rejected.
 
 ## Validation performed
 
 - `pnpm run check:static`: passed formatting, ESLint, and TypeScript.
 - Final self-contained scope after the 20-attempt amendment, shown as a normalized reproducible command: `TEST_ENV=self-contained LIVE_SUITE=framework pnpm exec playwright test tests/framework --project=chromium-en-CA --reporter=line` — 30 passed. This includes 7 lifecycle/ledger tests, 4 response-observer tests, 2 runtime-override guard tests, and 1 diagnostics-fixture suppression test. The local run used the bundled Node executable directly because the shell did not expose `node` on its default path.
-- Pre-execution account-creation discovery with staging suite selection and `--list`: exactly 20 tests in one dedicated project; this check only discovered them. The later authorized run executed one and stopped 19.
+- Pre-execution account-creation discovery with staging suite selection and `--list`: exactly 20 tests in one dedicated project; this check only discovered them. The initial authorized run executed one and stopped. Later bounded investigation and one separately approved confirmation brought the lifetime total to ten.
 - `git diff --check`: passed.
-- Live QA account-creation execution: one attempt ran. It became `ambiguous` because the observer did not find exactly one safely correlated response during the bounded window. The configured first-failure stop prevented the remaining 19 attempts.
+- Initial live QA account-creation execution: one attempt ran. It became `ambiguous` because the observer did not find exactly one safely correlated response during the bounded window. The configured first-failure stop ended that run. See the Stage 7 result for the later investigation and confirmation outcomes.
 
 An initial all-browser attempt inside the restricted sandbox could not launch its browser processes. The same complete Chromium/en-CA framework scope passed outside that browser sandbox. Firefox/WebKit were not rerun because the new write implementation is intentionally limited to Chromium and the focused implementation risks were covered there.
 
@@ -43,14 +43,14 @@ An initial all-browser attempt inside the restricted sandbox could not launch it
 - `tests/real-app/account-creation/signup-create.spec.ts`: separately gated SGN-006 QA write instances under the deployed-app suite, with runtime safety assertions.
 - `playwright.config.ts`: isolated project and artifact settings.
 - `src/pages/live-signup.page.ts`: page controls only; lifecycle and response analysis remain outside the Page Object.
-- `test-data/scenarios/staging/signup-account-ledger.json`: ignored local ledger; contains one ambiguous attempt and 19 unused slots under the explicit 2026-09-23 amendment.
+- `test-data/scenarios/staging/signup-account-ledger.json`: ignored local ledger; currently contains ten ambiguous attempts and ten unused slots under the explicit 2026-09-23 amendment.
 
 ## Known limitations
 
-- `example.com` may be rejected by server policy, consuming the first slot without proving creation.
-- The actual endpoint and response shape remain unobserved. A shape outside the approved allowlist becomes `ambiguous` rather than being logged or guessed.
+- `example.com` was rejected by server policy with HTTP 422; the investigation subsequently used unique synthetic `qa.nesto.ca` addresses.
+- The investigation observed `POST /api/accounts` returning HTTP 201 with an exact `{ account, token }` envelope. The final confirmation still stopped because a populated sensitive-shaped account field could not be retained or approved automatically.
 - No mailbox, admin lookup, cleanup endpoint, or independent account reconciliation exists.
-- No accessibility scanner was added in this implementation stage.
+- No accessibility scanner was added during the original Stage 6 implementation. Later read-only coverage added `@axe-core/playwright`; its baseline is reported in the Stage 7 result.
 - The French phone-country accessible name and consent copy still require product/language-owner review.
 
 ## Skeptical review
@@ -61,7 +61,7 @@ The 20-attempt amendment review then found CLI override risk, probable random ph
 
 ## Recommended next step
 
-Review the sanitized Stage 7 result and investigate the response-correlation gap without submitting another form. A future live attempt requires a new explicit human decision because this approved run stopped on ambiguity.
+Stage 7 is approved. Proceed to Stage 8 metrics without submitting another form. A future live attempt requires a new explicit human decision because the ledger remains disabled after the privacy stop.
 
 ## Post-execution QA-suite amendment — 2026-09-23
 
@@ -71,7 +71,7 @@ Review the sanitized Stage 7 result and investigate the response-correlation gap
 - Static formatting, ESLint, TypeScript, and `git diff --check` passed. Account-creation discovery still lists 20 serial tests in the dedicated project.
 - No additional signup was submitted. The local ledger remains disabled with one ambiguous attempt and 19 unused slots.
 
-This section records the state at that amendment. Later bounded Stage 7 investigation consumed nine lifetime slots in total and left eleven. It identified the hydration requirement, letters-only name validation, placeholder-email rejection, and the actual `POST /api/accounts` response: HTTP 201 with an `{ account, token }` envelope, submitted non-secret account information, normalized phone, and an identifier. The current ledger remains disabled pending approval of the exact observed contract in `SIGNUP_RESULTS.md`.
+This section records the state at that amendment. Later bounded Stage 7 investigation consumed nine lifetime slots in total and left eleven. It identified the hydration requirement, letters-only name validation, placeholder-email rejection, and the actual `POST /api/accounts` response: HTTP 201 with an `{ account, token }` envelope, submitted non-secret account information, normalized phone, and an identifier. The human owner then approved exactly one ordinary guarded confirmation. That confirmation consumed attempt 10, reached `/getaquote`, and stopped on `sensitive-response-data`. The current ledger remains disabled with ten unused slots. The human owner approved the Stage 7 result without authorizing another live write.
 
 ### Human decision
 
