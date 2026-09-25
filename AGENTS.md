@@ -17,7 +17,7 @@ Keep feature plans discoverable from `README.md`. Update the plan when evidence 
 ## Safety and scope
 
 - Default to `self-contained`. Run live tests only through the explicit staging command. Production execution is disabled; a future `production` tag or route must not bypass that guard.
-- Existing staging cases are read-only. The human approver permits future QA account creation with capped persistent synthetic accounts, but no write-capable case may run until its lifecycle specifies a cap, unique data, ownership, a ledger, and retention or cleanup. Never use real personal data.
+- Ordinary staging cases are read-only. A separately gated QA account-creation project exists, but its local ledger is disabled after ten consumed attempts. A documented lifecycle, numeric cap, unique synthetic data, ownership, ledger, and retention or cleanup remain necessary prerequisites; they do not authorize another write. No write-capable case may run without a new explicit human decision that covers the proposed attempt. Never use real personal data.
 - Never commit credentials, cookies, tokens, real customer data, or sensitive screenshots. Treat traces, videos, console output, and HTML reports as potentially sensitive. Preserve the existing redaction and failure-only artifact behavior.
 - Do not claim that a test covers a live environment unless it actually ran there. Separate static checks, test discovery, self-contained runs, and live QA results in the handoff.
 
@@ -44,7 +44,7 @@ Keep feature plans discoverable from `README.md`. Update the plan when evidence 
 
 ## Before a PR or handoff
 
-- Run `pnpm run check:static` and the relevant self-contained tests. Existing staging cases are read-only; run a future write-capable case only with its documented lifecycle and explicit environment capability. Report exact pass/fail counts and constraints.
+- Run `pnpm run check:static` and the relevant self-contained tests. Ordinary staging cases are read-only. The separately gated signup write project remains disabled after ten attempts; do not re-enable or run it without a new explicit human decision, even when its lifecycle and environment capability are otherwise satisfied. Report exact pass/fail counts and constraints.
 - Preserve screenshots, videos, and traces on ordinary test failures. Write-capable cases follow their approved privacy design and may disable those artifacts when entered secrets could be exposed.
 - Explain the case's purpose, test data, selector choice, alternatives/tradeoffs, validation, and any unresolved contract. Include visual/video evidence for visible page changes; documentation-only changes may say visual evidence is not applicable.
 - Update the roadmap only when acceptance criteria are met. Do not mark a proposed reporter, tag, metric, or TestOps integration as delivered because it appears in a document.

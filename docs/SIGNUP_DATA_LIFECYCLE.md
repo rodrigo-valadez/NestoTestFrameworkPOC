@@ -6,19 +6,19 @@
 
 The first write-capable case is one English, Chromium signup using a unique synthetic identity:
 
-| Field           | Proposed value rule                                                             | Stored after execution                                                                                   |
-| --------------- | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| Case ID         | `SGN-006/primary-en-ca`                                                         | Yes                                                                                                      |
-| Run ID          | Cryptographically generated UUID                                                | Yes                                                                                                      |
-| First name      | `Qa`                                                                            | Yes, in ignored ledger                                                                                   |
-| Last name       | `Agent<run-id-suffix>`                                                          | Yes, in ignored ledger                                                                                   |
-| Phone country   | Canada                                                                          | Yes                                                                                                      |
-| Phone           | Canadian fictional `555-01xx` number selected deterministically from the run ID | Yes, in ignored ledger                                                                                   |
-| Province        | Alberta                                                                         | Yes                                                                                                      |
-| Email           | `nesto.qa.signup.<run-id>@example.com`                                          | Yes, in ignored ledger; `example.com` is a reserved example domain and mailbox delivery is outside scope |
-| Password        | Generated in memory: 16 characters with uppercase, lowercase, and number        | Never stored, logged, attached, or placed in an error message                                            |
-| Confirmation    | Same in-memory password                                                         | Never stored                                                                                             |
-| Partner consent | `true`, as directed by the human approver                                       | Yes                                                                                                      |
+| Field           | Proposed value rule                                                             | Stored after execution                                        |
+| --------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| Case ID         | `SGN-006/primary-en-ca`                                                         | Yes                                                           |
+| Run ID          | Cryptographically generated UUID                                                | Yes                                                           |
+| First name      | `Qa`                                                                            | Yes, in ignored ledger                                        |
+| Last name       | `Agent<run-id-suffix>`                                                          | Yes, in ignored ledger                                        |
+| Phone country   | Canada                                                                          | Yes                                                           |
+| Phone           | Canadian fictional `555-01xx` number selected deterministically from the run ID | Yes, in ignored ledger                                        |
+| Province        | Alberta                                                                         | Yes                                                           |
+| Email           | `signup-automation-<run-id>@qa.nesto.ca`                                        | Yes, in ignored ledger; mailbox delivery is outside scope     |
+| Password        | Generated in memory: 16 characters with uppercase, lowercase, and number        | Never stored, logged, attached, or placed in an error message |
+| Confirmation    | Same in-memory password                                                         | Never stored                                                  |
+| Partner consent | `true`, as directed by the human approver                                       | Yes                                                           |
 
 The email domain may be rejected by server policy even when its syntax is valid. That would be observed behavior and consumes the reserved attempt; the test must not silently change to a real or personal address. A different QA-owned mailbox/domain requires a new human decision.
 
@@ -64,9 +64,9 @@ The first successful response must contain the submitted email plus the visible 
 
 It must not use value-bearing Playwright assertions that print email, phone, password, or response content on failure. Compare in memory and throw a fixed, non-sensitive error when the safe-field match fails.
 
-### Observed QA response amendment — pending human approval
+### Observed QA response amendment — approved and exercised
 
-Bounded investigation on 2026-09-23 observed `POST /api/accounts`. A valid synthetic `qa.nesto.ca` submission returned HTTP 201 with exactly `{ account, token }`; the `account` object contained the submitted non-secret information and a non-empty identifier, while phone was normalized to the Canadian country-code form. The token value was never retained. The proposed executable contract requires that exact envelope, ignores the token value, compares only the safe account fields in memory, permits only the observed account-field schema, and rejects missing or extra envelope keys, unknown account keys, malformed request JSON, wrong-key email correlation, non-Canadian phone prefixes, whitespace identifiers, and unsafe keys inside `account`. This amendment requires human approval before another live confirmation.
+Bounded investigation on 2026-09-23 observed `POST /api/accounts`. A valid synthetic `qa.nesto.ca` submission returned HTTP 201 with exactly `{ account, token }`; the `account` object contained the submitted non-secret information and a non-empty identifier, while phone was normalized to the Canadian country-code form. The token value was never retained. The executable contract requires that exact envelope, ignores the token value, compares only the safe account fields in memory, permits only the observed account-field schema, and rejects missing or extra envelope keys, unknown account keys, malformed request JSON, wrong-key email correlation, non-Canadian phone prefixes, whitespace identifiers, and unsafe keys inside `account`. The human owner approved exactly one ordinary confirmation under this amendment. Attempt 10 reached `/getaquote` but stopped as `sensitive-response-data`; another live attempt requires a new explicit human decision.
 
 Classify account state as follows:
 
@@ -111,11 +111,11 @@ Production remains rejected. CI, retries, full parallelism, and the general brow
 - **Prepared by:** Codex data/lifecycle designer, 2026-09-22.
 - **Inputs:** approved Stage 2 write budget, approved Stage 3 limits, approved Stage 4 selector contract, current environment guards, diagnostics fixture, reporters, and ignored staging-data policy.
 - **Decisions approved:** one synthetic EN/Chromium profile per attempt with partner consent set to `true`; requesting user as owner; 20 consumed-on-reservation slots; 30-day review; no automatic retries; stop on first failure; response-based outcome classification; no claim that rejection proves non-creation; diagnostics and Playwright artifacts disabled.
-- **Open risk:** the reserved `example.com` address may not satisfy server policy, and there is no independent account lookup or cleanup. Both are reported rather than bypassed.
-- **Validation:** repository static checks and document formatting pass. Design inspection covered environment guards, automatic diagnostics, report artifacts, ignored data, and the existing signup parser. No data was entered, no live test ran, and all 20 write slots remain unused before execution.
+- **Open risk:** the originally proposed reserved `example.com` address was later rejected by the deployed server with HTTP 422 and replaced with unique synthetic `qa.nesto.ca` data. There is no independent account lookup or cleanup.
+- **Validation at Stage 5 review:** repository static checks and document formatting passed. Design inspection covered environment guards, automatic diagnostics, report artifacts, ignored data, and the existing signup parser. At that time, no data had been entered, no live test had run, and all 20 write slots were unused.
 - **Skeptical review:** independent reviewer, 2026-09-22. Initial findings identified a non-exclusive ledger transaction, weak response correlation, an undefined response allowlist, an unsupported password symbol, possible identity reuse, and missing handoff bookkeeping. The design was corrected in content revision `71d2d954d00f9beb85aa7628c69c8b415c803293`. Subsequent URL-persistence and consent-consistency concerns were corrected. After the human changed partner consent to `true`, the reviewer confirmed exact JSON boolean comparison and consistent unresolved requiredness language, with no remaining actionable findings.
-- **Execution state:** executable under the explicit 2026-09-23 Stage 6 amendment. The ledger records both the historical two-attempt approval date and the current 20-attempt amendment date; all 20 slots are unused before execution.
-- **Recommended next step:** approve this lifecycle and data contract for Stage 6 implementation, request revision, or pause.
+- **Current execution state:** ten attempts are consumed, ten are unused, and the ledger is disabled. The ledger records both the historical two-attempt approval date and the 20-attempt amendment date.
+- **Stage 5 next step at handoff:** approve this lifecycle and data contract for Stage 6 implementation, request revision, or pause. That decision was later approved as recorded below.
 
 ### Human decision
 
@@ -123,5 +123,5 @@ Production remains rejected. CI, retries, full parallelism, and the general brow
 - **Decision requested:** superseded by the human owner's 2026-09-23 approval of Stage 6 for 20 live SGN-006 attempts under the amended serial, stop-on-first-failure lifecycle.
 - **Decision:** approved for Stage 6 implementation.
 - **Decision maker and date:** requesting user and ledger owner, 2026-09-23, after stating “stage 5 looks good.”
-- **Conditions:** implementation and self-contained validation only. A Stage 6 human gate is still required before the ledger becomes executable or a live signup runs.
+- **Conditions at the Stage 5 decision:** implementation and self-contained validation only; a separate Stage 6 human gate was required before live execution. That condition was satisfied by the Stage 6 amendment below.
 - **Stage 6 amendment:** requesting user and ledger owner, 2026-09-23, explicitly approved Stage 6 for 20 live SGN-006 attempts. This supersedes the earlier two-attempt cap. All attempts remain consumed on reservation, serial, without retries, and execution stops on the first failure or ambiguous result.

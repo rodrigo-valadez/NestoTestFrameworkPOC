@@ -7,9 +7,9 @@ For each roadmap item, record an owner and target date in the implementing issue
 ## Current baseline
 
 - Playwright/TypeScript framework tests run locally and in the PR quality gate across Chromium, Firefox, and WebKit in `en-CA` and `fr-CA`. Edge is available as an opt-in project.
-- Staging (`https://app.qa.nesto.ca`) has opt-in, read-only signup route and language-switch checks. The default suite does not contact it.
-- Production execution is disabled. The staging API origin and health route are unknown. No live test creates an account.
-- Playwright currently produces a terminal list, HTML report, and failure-only screenshots, videos, traces, and redacted browser diagnostics. CI retains uploaded artifacts for 14 days. Cross-run failure classification and ROI tracking are **not** implemented.
+- Staging (`https://app.qa.nesto.ca`) has opt-in, read-only signup coverage across the visible form, language switching, selected negative validation, consent, and accessibility. The default suite does not contact it.
+- Production execution is disabled. The staging API health route remains unknown. A separately gated account-creation project exists, but its local ledger is disabled after ten consumed attempts and requires a new explicit human decision before any further write.
+- Playwright currently produces a terminal list, HTML report, failure-only screenshots/videos/traces, redacted browser diagnostics, and one sanitized committed latest-report summary. CI retains uploaded artifacts for 14 days. A manual one-day signup metrics baseline exists; automated cross-run clustering, weekly trends, and ROI tracking are **not** implemented.
 
 ## Coverage taxonomy
 
@@ -32,7 +32,7 @@ Every future case should also have a stable case ID, owner/feature area, expecte
 | 1        | Next              | Case inventory and tag contract                      | Stable IDs and definitions for the dimensions above; initial signup cases mapped to requirements, with exclusions and ownership recorded.                                                                                             |
 | 2        | Next              | Machine-readable reporting                           | Add a Playwright JSON or JUnit artifact alongside the existing HTML report; preserve run ID, commit, environment, case ID, browser, locale, retry, duration, and artifact links. Validate the schema in CI.                           |
 | 3        | Next              | Failure triage workflow                              | Each distinct failure has an owner, classification, evidence, decision date, and optional issue link. Unknowns remain visible; retries do not silently erase failures.                                                                |
-| 4        | Next              | Metrics baseline                                     | Publish weekly counts and trends using the definitions below, with a stated denominator and untriaged count. Calibrate before setting targets.                                                                                        |
+| 4        | Review            | Metrics baseline and comparable snapshots            | Review the initial baseline, then publish comparable weekly counts and trends using the definitions below, with a stated denominator and untriaged count. Calibrate before setting targets.                                           |
 | 5        | Evaluate          | Reporting/TestOps platform                           | Trial with real anonymized runs and a documented privacy, maintenance, integration, and cost comparison before adopting a hosted or self-hosted service.                                                                              |
 | 6        | After contracts   | More QA coverage                                     | Confirm API endpoint; approve test-account lifecycle and cleanup before write-capable journeys; approve bilingual copy; then add API, accessibility, readability, performance, and broader regression cases with appropriate budgets. |
 | 7        | Approval required | Production strategy                                  | Define permitted read-only checks, rate limits, data policy, owner, rollback/incident response, and explicit authorization. Until then production remains disabled.                                                                   |
