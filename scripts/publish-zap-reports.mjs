@@ -13,7 +13,6 @@ import process from 'node:process';
 const root = resolve(import.meta.dirname, '..');
 const sourceRoot = resolve(root, 'security-results');
 const destinationRoot = resolve(root, 'docs/security-report');
-const temporaryRoot = mkdtempSync(resolve(root, 'docs/.security-report-'));
 const backupRoot = resolve(root, 'docs/.security-report-backup');
 const imageDigest = process.env.ZAP_IMAGE_DIGEST;
 const scans = [
@@ -24,6 +23,7 @@ const scans = [
 if (!imageDigest?.match(/^sha256:[a-f0-9]{64}$/u)) {
   throw new Error('ZAP_IMAGE_DIGEST must be a SHA-256 digest from the executed image.');
 }
+const temporaryRoot = mkdtempSync(resolve(root, 'docs/.security-report-'));
 
 const escapeHtml = value =>
   String(value)
