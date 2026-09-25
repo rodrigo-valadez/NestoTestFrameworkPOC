@@ -55,7 +55,7 @@ This is limited static review of the test repository. Full application SAST requ
 ### DAST
 
 - Bounded OWASP ZAP 2.17.0 passive scans of the English and French signup pages.
-- Exact target allowlist, immutable container digest, unauthenticated execution, GET-only observed evidence, disabled form processing, and no active scan jobs.
+- Exact target allowlist, immutable container digest, unauthenticated execution, GET-only published alert instances, disabled form processing, and no active scan jobs. The alert report is not a complete request history.
 - Sanitized committed reports that exclude headers, cookies, bodies, page content, and raw evidence.
 
 ### Accessibility

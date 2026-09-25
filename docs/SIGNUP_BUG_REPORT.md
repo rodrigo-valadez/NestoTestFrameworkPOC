@@ -51,7 +51,7 @@ During bounded SGN-006 investigation, interacting before client hydration could 
 - **Observed:** Bounded unauthenticated passive scans reported that both signup responses lacked a Content Security Policy header.
 - **Expected:** The application owner should define and deploy an appropriate CSP, or document why another control or a time-bound exception is acceptable.
 - **Impact:** Without CSP, the browser lacks this additional restriction on which scripts, styles, frames, and other resources the page may load. This finding does not by itself demonstrate an exploitable cross-site scripting vulnerability.
-- **Safety:** Each scan made one reported `GET` request to its exact approved signup URL. Form processing and active scanning were disabled; no account was created.
+- **Safety:** Each published alert instance refers to a `GET` on its exact approved signup URL. Runtime output showed ZAP accept the plan with form processing and active scanning absent, and no account was created. The traditional JSON alert report is not a complete request history.
 - **Evidence:** [English sanitized ZAP report](security-report/en-CA/index.html) and [French sanitized ZAP report](security-report/fr-CA/index.html).
 
 ZAP also classified each page as a “Modern Web Application” with informational risk. That is descriptive scanner metadata and is not recorded as a product bug.

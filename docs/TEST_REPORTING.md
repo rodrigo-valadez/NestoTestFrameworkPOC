@@ -39,7 +39,7 @@ Raw ZAP HTML can contain request and response headers, cookies, and complete pag
 ZAP_IMAGE_DIGEST=sha256:<executed-image-digest> pnpm run test:report:security
 ```
 
-The publisher reads each locale's raw JSON, rejects any recorded method other than `GET` or URI other than the exact approved signup target, and replaces `docs/security-report/`. The committed HTML and JSON contain only scan metadata, the immutable image digest, rule ID, finding name, risk, confidence, method, and approved URI.
+The publisher reads and validates both locale JSON files in a temporary directory before replacing `docs/security-report/`. It rejects any **alert instance** whose recorded method is not `GET` or whose URI is not the exact approved signup target. ZAP's traditional JSON alert list is not a complete request history. The committed HTML and JSON contain only scan metadata, the caller-declared image digest, rule ID, finding name, risk, confidence, method, and approved URI.
 
 - [English passive DAST report](security-report/en-CA/index.html)
 - [French passive DAST report](security-report/fr-CA/index.html)

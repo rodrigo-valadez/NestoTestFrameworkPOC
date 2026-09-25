@@ -170,7 +170,7 @@ Publish sanitized English and French reports after both local scans exist:
 ZAP_IMAGE_DIGEST=sha256:<executed-image-digest> pnpm run test:report:security
 ```
 
-The publisher rejects evidence containing a method other than `GET` or a URI other than the approved locale target.
+The publisher rejects alert instances containing a method other than `GET` or a URI other than the approved locale target. The alert list is not a complete request history, and the digest supplied to the publisher is declared provenance that must match the executed image.
 
 ## Performance and fault testing — planned
 

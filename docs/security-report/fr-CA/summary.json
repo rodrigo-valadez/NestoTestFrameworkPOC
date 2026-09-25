@@ -1,13 +1,16 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "generatedAt": "Fri, 25 Sept 2026 05:12:44",
   "zapVersion": "2.17.0",
-  "imageDigest": "sha256:781a2bdaea47324e7bab583e2263f21d257b0aee61ed51521a5be45f5f5081ef",
-  "scanType": "unauthenticated-passive",
+  "declaredImageDigest": "sha256:781a2bdaea47324e7bab583e2263f21d257b0aee61ed51521a5be45f5f5081ef",
+  "declaredScanProfile": {
+    "scanType": "unauthenticated-passive",
+    "activeScan": false,
+    "formProcessing": false
+  },
+  "evidenceScope": "ZAP alert instances only; not a complete request history",
   "locale": "fr-CA",
   "target": "https://app.qa.nesto.ca/fr/signup",
-  "activeScan": false,
-  "formProcessing": false,
   "alerts": [
     {
       "pluginId": "10038",

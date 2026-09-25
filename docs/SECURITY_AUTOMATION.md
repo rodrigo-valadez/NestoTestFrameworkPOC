@@ -57,7 +57,7 @@ ZAP full scans and API scans remain absent because they can perform active attac
 
 ## Latest approved demonstration
 
-The 2026-09-24 English and French scans used ZAP 2.17.0 from image digest `sha256:781a2bdaea47324e7bab583e2263f21d257b0aee61ed51521a5be45f5f5081ef`. Each sanitized report contains one exact-target GET and two alerts: missing Content Security Policy at medium risk/high confidence, and the informational “Modern Web Application” classification.
+The 2026-09-25 UTC English and French scans used ZAP 2.17.0 from image digest `sha256:781a2bdaea47324e7bab583e2263f21d257b0aee61ed51521a5be45f5f5081ef`. Runtime output showed the Automation Framework accept the bounded plan and finish successfully. Each sanitized report contains alert instances for the exact-target GET and two alerts: missing Content Security Policy at medium risk/high confidence, and the informational “Modern Web Application” classification. The traditional JSON alert report is not a complete request log.
 
 - [English sanitized report](security-report/en-CA/index.html)
 - [French sanitized report](security-report/fr-CA/index.html)
