@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "Fri, 25 Sept 2026 05:12:44",
+  "zapVersion": "2.17.0",
+  "imageDigest": "sha256:781a2bdaea47324e7bab583e2263f21d257b0aee61ed51521a5be45f5f5081ef",
+  "scanType": "unauthenticated-passive",
+  "locale": "fr-CA",
+  "target": "https://app.qa.nesto.ca/fr/signup",
+  "activeScan": false,
+  "formProcessing": false,
+  "alerts": [
+    {
+      "pluginId": "10038",
+      "name": "Content Security Policy (CSP) Header Not Set",
+      "risk": "Medium (High)",
+      "confidence": "3",
+      "instances": [
+        {
+          "method": "GET",
+          "uri": "https://app.qa.nesto.ca/fr/signup"
+        }
+      ]
+    },
+    {
+      "pluginId": "10109",
+      "name": "Modern Web Application",
+      "risk": "Informational (Medium)",
+      "confidence": "2",
+      "instances": [
+        {
+          "method": "GET",
+          "uri": "https://app.qa.nesto.ca/fr/signup"
+        }
+      ]
+    }
+  ]
+}

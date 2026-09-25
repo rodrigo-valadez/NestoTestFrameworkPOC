@@ -54,3 +54,12 @@ The runner removes prior fixed-name reports immediately before starting Docker s
 This scan can report passive observations such as missing response headers, cookie attributes, cache controls, content security policy findings, mixed content, or information disclosure. It does not establish that SQL injection, cross-site scripting, authorization, authentication, business-logic, or rate-limit vulnerabilities are absent.
 
 ZAP full scans and API scans remain absent because they can perform active attacks. Adding them requires a separate design and explicit human approval.
+
+## Latest approved demonstration
+
+The 2026-09-24 English and French scans used ZAP 2.17.0 from image digest `sha256:781a2bdaea47324e7bab583e2263f21d257b0aee61ed51521a5be45f5f5081ef`. Each sanitized report contains one exact-target GET and two alerts: missing Content Security Policy at medium risk/high confidence, and the informational “Modern Web Application” classification.
+
+- [English sanitized report](security-report/en-CA/index.html)
+- [French sanitized report](security-report/fr-CA/index.html)
+
+The raw reports remain ignored because ZAP's modern HTML report includes headers, cookies, and response bodies. Publish reviewed minimal reports with `ZAP_IMAGE_DIGEST=sha256:<executed-image-digest> pnpm run test:report:security`.

@@ -31,6 +31,19 @@ The command publishes a sanitized report to `docs/test-report/latest/`. It delet
 
 The GitHub Actions `Quality gate` runs static checks and the self-contained browser suite, then uploads `playwright-report/` and `test-results/` as the `playwright-artifacts` artifact for 14 days. The workflow does not contact QA. A staging report is generated only when a person explicitly runs `corepack pnpm run test:env staging` in an authorized environment.
 
+## ZAP report publishing
+
+Raw ZAP HTML can contain request and response headers, cookies, and complete page bodies, so `security-results/` remains ignored. After approved English and French passive scans, publish the fixed sanitized examples with:
+
+```bash
+ZAP_IMAGE_DIGEST=sha256:<executed-image-digest> pnpm run test:report:security
+```
+
+The publisher reads each locale's raw JSON, rejects any recorded method other than `GET` or URI other than the exact approved signup target, and replaces `docs/security-report/`. The committed HTML and JSON contain only scan metadata, the immutable image digest, rule ID, finding name, risk, confidence, method, and approved URI.
+
+- [English passive DAST report](security-report/en-CA/index.html)
+- [French passive DAST report](security-report/fr-CA/index.html)
+
 ## Privacy exception for account creation
 
 The write-capable account-creation project uses only the terminal `list` reporter. Screenshots, video, traces, HTML reporting, and browser diagnostics are disabled. Its persistent ledger stores sanitized outcome metadata and never stores passwords, tokens, cookies, raw request bodies, or raw response bodies.

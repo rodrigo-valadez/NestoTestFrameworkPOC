@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ZAP passive report — fr-CA</title>
+  <style>
+    body { color: #172033; font: 15px system-ui, sans-serif; margin: 0 auto; max-width: 1100px; padding: 32px; }
+    code { overflow-wrap: anywhere; }
+    .meta { background: #f5f7fb; border-radius: 8px; padding: 16px; }
+    table { border-collapse: collapse; margin-top: 24px; width: 100%; }
+    th, td { border-bottom: 1px solid #dce1eb; padding: 10px; text-align: left; vertical-align: top; }
+    th { background: #f5f7fb; }
+  </style>
+</head>
+<body>
+  <h1>ZAP passive report — fr-CA</h1>
+  <div class="meta">
+    <p><strong>Target:</strong> <code>https://app.qa.nesto.ca/fr/signup</code></p>
+    <p><strong>Generated:</strong> Fri, 25 Sept 2026 05:12:44</p>
+    <p><strong>ZAP:</strong> 2.17.0</p>
+    <p><strong>Scan:</strong> unauthenticated passive scan; active scanning and form processing disabled</p>
+    <p><strong>Image:</strong> <code>sha256:781a2bdaea47324e7bab583e2263f21d257b0aee61ed51521a5be45f5f5081ef</code></p>
+  </div>
+  <p>This sanitized report excludes request and response headers, bodies, cookies, page content, and raw evidence. The local raw report remains Git-ignored.</p>
+  <table>
+    <thead><tr><th>Rule</th><th>Finding</th><th>Risk</th><th>Confidence</th><th>Method</th><th>URI</th></tr></thead>
+    <tbody><tr>
+        <td>10038</td>
+        <td>Content Security Policy (CSP) Header Not Set</td>
+        <td>Medium (High)</td>
+        <td>3</td>
+        <td>GET</td>
+        <td><code>https://app.qa.nesto.ca/fr/signup</code></td>
+      </tr>
+<tr>
+        <td>10109</td>
+        <td>Modern Web Application</td>
+        <td>Informational (Medium)</td>
+        <td>2</td>
+        <td>GET</td>
+        <td><code>https://app.qa.nesto.ca/fr/signup</code></td>
+      </tr></tbody>
+  </table>
+</body>
+</html>
