@@ -6,6 +6,15 @@
 
 <!-- Link the requirement, bug, or review feedback. Explain the smallest chosen solution. -->
 
+## Decisions and rationale
+
+<!-- Record the meaningful decisions a future maintainer would otherwise have to reconstruct from the diff. Repeat this block when the PR contains more than one decision. -->
+
+- **Decision:**
+- **Reason:**
+- **Alternatives considered:**
+- **Trade-offs:**
+
 ## Affected layer
 
 - [ ] Configuration
@@ -38,4 +47,4 @@
 
 ## Review map
 
-<!-- Point reviewers to the 2-5 files/decisions that matter most. Revset can visualize their code relationships. -->
+<!-- Point reviewers to the 2-5 files and decisions that matter most. Review tools can supplement this map, but this PR remains the durable decision record. -->
