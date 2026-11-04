@@ -26,37 +26,28 @@ jobs:
       - run: pnpm run check:static
 
   browser-locale:
-    name: ${{ matrix.project }}
+    name: ${{ matrix.browser.name }}-${{ matrix.locale }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     strategy:
       fail-fast: false
+      # The Cartesian product keeps the workflow compact while GitHub still reports
+      # every browser/locale pair as its own required check.
       matrix:
-        include:
-          - project: chromium-en-CA
-            browser: chromium
+        browser:
+          - name: chromium
+            install: chromium
             includeEdge: false
-          - project: chromium-fr-CA
-            browser: chromium
+          - name: firefox
+            install: firefox
             includeEdge: false
-          - project: firefox-en-CA
-            browser: firefox
+          - name: webkit
+            install: webkit
             includeEdge: false
-          - project: firefox-fr-CA
-            browser: firefox
-            includeEdge: false
-          - project: webkit-en-CA
-            browser: webkit
-            includeEdge: false
-          - project: webkit-fr-CA
-            browser: webkit
-            includeEdge: false
-          - project: edge-en-CA
-            browser: msedge
+          - name: edge
+            install: msedge
             includeEdge: true
-          - project: edge-fr-CA
-            browser: msedge
-            includeEdge: true
+        locale: [en-CA, fr-CA]
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -67,19 +58,19 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Install ${{ matrix.browser }}
-        run: pnpm exec playwright install --with-deps ${{ matrix.browser }}
-      - name: Run ${{ matrix.project }}
-        run: pnpm exec playwright test --project=${{ matrix.project }}
+      - name: Install ${{ matrix.browser.install }}
+        run: pnpm exec playwright install --with-deps ${{ matrix.browser.install }}
+      - name: Run ${{ matrix.browser.name }}-${{ matrix.locale }}
+        run: pnpm exec playwright test --project=${{ matrix.browser.name }}-${{ matrix.locale }}
         env:
           TEST_ENV: self-contained
           LIVE_SUITE: framework
-          PLAYWRIGHT_INCLUDE_EDGE: ${{ matrix.includeEdge }}
-      - name: Upload ${{ matrix.project }} artifacts
+          PLAYWRIGHT_INCLUDE_EDGE: ${{ matrix.browser.includeEdge }}
+      - name: Upload ${{ matrix.browser.name }}-${{ matrix.locale }} artifacts
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-${{ matrix.project }}
+          name: playwright-${{ matrix.browser.name }}-${{ matrix.locale }}
           path: |
             playwright-report/
             test-results/

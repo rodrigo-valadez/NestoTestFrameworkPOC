@@ -32,7 +32,9 @@ function browserLocaleProject(
   };
 }
 
-// Keep the supported matrix explicit so reviewers can see every browser/locale pair.
+// Deliberately list every pair here instead of generating it from two arrays. This is
+// the executable coverage contract: a missing French or browser project is visible in
+// review and cannot be hidden by a faulty loop or filter.
 const readOnlyProjects: Project[] = [
   browserLocaleProject('chromium', 'Desktop Chrome', 'en-CA'),
   browserLocaleProject('chromium', 'Desktop Chrome', 'fr-CA'),

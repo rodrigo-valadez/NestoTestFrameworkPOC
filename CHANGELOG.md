@@ -12,6 +12,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Ver
 - Added exact localized assertions for English and French signup validation messages.
 - Simplified suite routing and documented the framework as four layers.
 - Added a tool-agnostic PR template for concise reviews, including durable decision rationale, alternatives considered, and trade-offs.
+- Reduced CI matrix duplication without changing the eight browser/locale checks, and documented non-obvious coverage, localization, and safety decisions beside the code.
 
 ### Added
 

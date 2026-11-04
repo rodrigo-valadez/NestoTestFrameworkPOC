@@ -9,6 +9,8 @@ const VALID_PASSWORD = 'QaAutomation7Pass';
 
 async function preventAccountCreation(page: Page): Promise<() => number> {
   let attempts = 0;
+  // This route is a safety boundary, not only an assertion: even a client-validation
+  // regression cannot create a QA account from these read-only tests.
   await page.route('**/accounts', async route => {
     if (route.request().method() === 'POST') {
       attempts += 1;

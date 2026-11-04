@@ -24,6 +24,8 @@ export interface LiveSignupText {
   };
 }
 
+// Expected copy stays outside Page Objects and outside the application's translation
+// bundle so the test cannot validate the product against the same source it uses.
 const expectedCopy: Record<SupportedLocale, LiveSignupText> = {
   'en-CA': enCA,
   'fr-CA': frCA
