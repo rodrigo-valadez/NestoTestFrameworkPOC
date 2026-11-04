@@ -283,12 +283,12 @@ Use separate manually approved Jenkins stages for live QA or ZAP. Restrict those
 
 ## Architecture: four layers
 
-| Layer              | Folders                                                           | Responsibility                                                                                    |
-| ------------------ | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| Configuration      | `playwright.config.ts`, `config/`, `src/config/`                  | Select the suite, browser, locale, environment, and safety capabilities.                          |
-| Reusable test code | `src/pages/`, `src/workflows/`, `src/fixtures/`, `src/framework/` | Page interactions, cross-page journeys, dependency injection, diagnostics, and selector fallback. |
-| Test inputs        | `src/i18n/`, `src/test-data/`, `test-data/`                       | Typed locale copy, parsers, scenarios, and approved baselines.                                    |
-| Executable checks  | `tests/framework/`, `tests/real-app/`, `tests/api/`               | Local framework contracts, opt-in QA behavior, and the read-only API scaffold.                    |
+| Layer              | Folders                                                           | Responsibility                                                                                              |
+| ------------------ | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Configuration      | `playwright.config.ts`, `config/`, `src/config/`                  | Select the suite, browser, locale, environment, and safety capabilities.                                    |
+| Reusable test code | `src/pages/`, `src/workflows/`, `src/fixtures/`, `src/framework/` | Page interactions, cross-page journeys, dependency injection, browser diagnostics, and accessibility gates. |
+| Test inputs        | `src/i18n/`, `src/test-data/`, `test-data/`                       | Typed locale copy, parsers, scenarios, and approved baselines.                                              |
+| Executable checks  | `tests/framework/`, `tests/real-app/`, `tests/api/`               | Local framework contracts, opt-in QA behavior, and the read-only API scaffold.                              |
 
 `docs/` contains supporting plans and evidence, while `scripts/` contains command wrappers and report publishers. Start at this README; open those only when you need the deeper rationale.
 

@@ -34,7 +34,7 @@ This was a time-boxed challenge. Some questions that would normally be raised wi
 
 - Playwright and TypeScript framework covering Chromium, Firefox, and WebKit in English and French.
 - Task-oriented Page Objects and fixture-injected localization contracts.
-- Ordered semantic locator fallbacks that record the successful strategy and reject ambiguity.
+- One explicit semantic locator per control, with a documented stable-attribute exception for the known phone-country accessibility defect.
 - Self-contained tests plus explicitly selected QA tests.
 - Data-driven negative samples, consent behavior, localization, and guarded account creation.
 

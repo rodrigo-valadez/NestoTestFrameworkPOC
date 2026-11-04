@@ -13,6 +13,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Ver
 - Simplified suite routing and documented the framework as four layers.
 - Added a tool-agnostic PR template for concise reviews, including durable decision rationale, alternatives considered, and trade-offs.
 - Reduced CI matrix duplication without changing the eight browser/locale checks, and documented non-obvious coverage, localization, and safety decisions beside the code.
+- Replaced the multi-selector resolution loop with one explicit locator per control and removed its fixture and framework tests.
 
 ### Added
 
@@ -21,7 +22,6 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Ver
 - Playwright and TypeScript framework foundation.
 - Locale-specific `en-CA` and `fr-CA` projects with typed expected-copy fixtures.
 - Task-oriented signup Page Object.
-- Ordered locator resolution with strategy annotations and ambiguity detection.
 - Chromium, Firefox, WebKit, and Microsoft Edge browser coverage.
 - ESLint, Prettier, Husky, and lint-staged quality checks.
 - GitHub Actions quality gate with Playwright report artifacts.
