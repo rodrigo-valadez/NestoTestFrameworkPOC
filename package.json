@@ -23,7 +23,12 @@
     "test:security:baseline": "node scripts/run-zap-baseline.mjs",
     "test:account-creation": "cross-env TEST_ENV=staging LIVE_SUITE=account-creation QA_ACCOUNT_CREATION=true playwright test",
     "test:api": "cross-env LIVE_SUITE=api playwright test tests/api",
+    "test:list": "cross-env TEST_ENV=self-contained LIVE_SUITE=framework playwright test --list",
     "test:chromium": "cross-env TEST_ENV=self-contained LIVE_SUITE=framework playwright test --project=chromium-en-CA --project=chromium-fr-CA",
+    "test:firefox": "cross-env TEST_ENV=self-contained LIVE_SUITE=framework playwright test --project=firefox-en-CA --project=firefox-fr-CA",
+    "test:webkit": "cross-env TEST_ENV=self-contained LIVE_SUITE=framework playwright test --project=webkit-en-CA --project=webkit-fr-CA",
+    "test:en-CA": "cross-env TEST_ENV=self-contained LIVE_SUITE=framework playwright test --project=chromium-en-CA --project=firefox-en-CA --project=webkit-en-CA",
+    "test:fr-CA": "cross-env TEST_ENV=self-contained LIVE_SUITE=framework playwright test --project=chromium-fr-CA --project=firefox-fr-CA --project=webkit-fr-CA",
     "test:edge": "cross-env TEST_ENV=self-contained LIVE_SUITE=framework PLAYWRIGHT_INCLUDE_EDGE=true playwright test --project=edge-en-CA --project=edge-fr-CA",
     "test:headed": "cross-env TEST_ENV=self-contained LIVE_SUITE=framework playwright test --headed",
     "typecheck": "tsc --noEmit"

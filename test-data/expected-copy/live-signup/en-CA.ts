@@ -15,5 +15,11 @@ export const enCA: LiveSignupText = {
     'By checking this box, you agree to be contacted by nesto’s partners for the purposes of offering you financial products. You agree to nesto sharing your mortgage information with its partners. You can opt-out at any time.',
   submitButton: 'Create your account',
   languageSwitchLabel: 'FR',
-  languageSwitchTarget: 'fr-CA'
+  languageSwitchTarget: 'fr-CA',
+  validation: {
+    required: 'The field is required',
+    invalidEmail: 'Invalid email',
+    passwordMismatch: 'Passwords do not match',
+    passwordMinimum: 'Minimum of 12 letters required'
+  }
 };

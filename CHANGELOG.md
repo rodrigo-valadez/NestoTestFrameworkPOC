@@ -6,6 +6,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Ver
 
 ## Unreleased
 
+### Changed
+
+- Made the Chromium, Firefox, WebKit, Edge, English, and French project matrix explicit in Playwright and GitHub Actions.
+- Added exact localized assertions for English and French signup validation messages.
+- Simplified suite routing and documented the framework as four layers.
+- Added a PR template designed for concise GitHub and Revset review.
+
 ### Added
 
 - First deployed-page QA test case: switch signup language in both directions without submitting the form.

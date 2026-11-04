@@ -9,48 +9,90 @@ permissions:
   contents: read
 
 jobs:
-  quality-gate:
-    name: Quality gate
+  static-checks:
+    name: Static checks
     runs-on: ubuntu-latest
-    timeout-minutes: 30
-
+    timeout-minutes: 15
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
         with:
           version: 11.19.0
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run check:static
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Run static checks
-        run: pnpm run check:static
-
-      - name: Install Playwright browsers
-        run: pnpm exec playwright install --with-deps chromium firefox webkit msedge
-
-      - name: Run browser tests
-        run: pnpm test
-
-      - name: Run Microsoft Edge tests
-        run: pnpm run test:edge
-
-      - name: Upload Playwright artifacts
+  browser-locale:
+    name: ${{ matrix.project }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - project: chromium-en-CA
+            browser: chromium
+            includeEdge: false
+          - project: chromium-fr-CA
+            browser: chromium
+            includeEdge: false
+          - project: firefox-en-CA
+            browser: firefox
+            includeEdge: false
+          - project: firefox-fr-CA
+            browser: firefox
+            includeEdge: false
+          - project: webkit-en-CA
+            browser: webkit
+            includeEdge: false
+          - project: webkit-fr-CA
+            browser: webkit
+            includeEdge: false
+          - project: edge-en-CA
+            browser: msedge
+            includeEdge: true
+          - project: edge-fr-CA
+            browser: msedge
+            includeEdge: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.19.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Install ${{ matrix.browser }}
+        run: pnpm exec playwright install --with-deps ${{ matrix.browser }}
+      - name: Run ${{ matrix.project }}
+        run: pnpm exec playwright test --project=${{ matrix.project }}
+        env:
+          TEST_ENV: self-contained
+          LIVE_SUITE: framework
+          PLAYWRIGHT_INCLUDE_EDGE: ${{ matrix.includeEdge }}
+      - name: Upload ${{ matrix.project }} artifacts
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-artifacts
+          name: playwright-${{ matrix.project }}
           path: |
             playwright-report/
             test-results/
           if-no-files-found: ignore
           retention-days: 14
+
+  quality-gate:
+    name: Quality gate
+    if: ${{ always() }}
+    needs: [static-checks, browser-locale]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require every browser and locale check
+        run: |
+          test "${{ needs.static-checks.result }}" = "success"
+          test "${{ needs.browser-locale.result }}" = "success"

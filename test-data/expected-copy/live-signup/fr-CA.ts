@@ -14,5 +14,11 @@ export const frCA: LiveSignupText = {
     'En cochant cette case, vous acceptez d’être contacté par les partenaires de nesto dans le but de vous proposer des produits financiers. Vous acceptez que nesto partage vos informations de demande hypothécaire avec ses partenaires, si nous ne sommes pas en mesure de vous fournir nos services. Vous pouvez vous désinscrire à tout moment.',
   submitButton: 'Créez votre compte',
   languageSwitchLabel: 'EN',
-  languageSwitchTarget: 'en-CA'
+  languageSwitchTarget: 'en-CA',
+  validation: {
+    required: 'Ce champ est obligatoire.',
+    invalidEmail: 'Courriel invalide',
+    passwordMismatch: 'Les mots de passe ne correspondent pas',
+    passwordMinimum: 'Minimum de 12 lettres requises'
+  }
 };

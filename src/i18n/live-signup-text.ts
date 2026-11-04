@@ -16,6 +16,12 @@ export interface LiveSignupText {
   submitButton: string;
   languageSwitchLabel: string;
   languageSwitchTarget: SupportedLocale;
+  validation: {
+    required: string;
+    invalidEmail: string;
+    passwordMismatch: string;
+    passwordMinimum: string;
+  };
 }
 
 const expectedCopy: Record<SupportedLocale, LiveSignupText> = {
