@@ -1,3 +1,4 @@
+/** Environment parsing and production-rejection contracts; isolated from browser behavior by design. */
 import { expect, test } from '@playwright/test';
 import { loadEnvironmentConfig, parseEnvironmentConfig } from '../../src/config/environment';
 

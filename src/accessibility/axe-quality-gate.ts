@@ -1,3 +1,7 @@
+/**
+ * Compares observed axe findings with an approved baseline and severity policy.
+ * Kept outside UI tests so baseline governance is deterministic and unit-testable without a browser.
+ */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 

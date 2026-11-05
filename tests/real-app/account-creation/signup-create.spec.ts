@@ -1,3 +1,7 @@
+/**
+ * The only write-capable signup spec, isolated for serial execution, capped attempts, and artifact suppression.
+ * It is not combined with read-only signup tests because their safety and retry policies are intentionally different.
+ */
 import { resolve } from 'node:path';
 import { expect, test } from '../../../src/fixtures/test';
 import { requireAccountCreationEnvironment } from '../../../src/config/environment';

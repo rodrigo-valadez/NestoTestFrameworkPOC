@@ -1,3 +1,4 @@
+/** Ledger, identity, and response-classification contracts; kept together because they share one write-safety boundary. */
 import { closeSync, mkdtempSync, openSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';

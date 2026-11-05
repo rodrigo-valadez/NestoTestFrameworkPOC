@@ -1,3 +1,7 @@
+/**
+ * Task-oriented interactions for the deployed signup page.
+ * Kept separate from workflows so this class does not own test assertions, account budgets, or cross-page decisions.
+ */
 import { type Page } from '@playwright/test';
 import type { LiveSignupText } from '../i18n/live-signup-text';
 
@@ -13,7 +17,6 @@ export interface LiveSignupData {
   partnerConsent: boolean;
 }
 
-/** Task-oriented controls for the deployed signup page; no account-creation workflow. */
 export class LiveSignupPage {
   constructor(
     private readonly page: Page,

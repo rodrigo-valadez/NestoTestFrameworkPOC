@@ -1,3 +1,7 @@
+/**
+ * Minimal Page Object for local fixture wiring tests.
+ * It stays separate from LiveSignupPage so synthetic HTML cannot be mistaken for deployed-page coverage.
+ */
 import { expect, type Page } from '@playwright/test';
 import type { AppText } from '../i18n/app-text';
 

@@ -1,3 +1,7 @@
+/**
+ * Validates command-line environment/suite selection before starting Playwright.
+ * Kept outside package.json because argument validation and production guards need executable logic.
+ */
 import { spawnSync } from 'node:child_process';
 import process from 'node:process';
 import { fileURLToPath, URL } from 'node:url';

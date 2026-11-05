@@ -1,3 +1,7 @@
+/**
+ * Read-only client-validation coverage with an account-request interception boundary.
+ * Kept separate from account creation because these scenarios must never write even after a product regression.
+ */
 import { randomUUID } from 'node:crypto';
 import type { Locator, Page } from '@playwright/test';
 import { expect, test } from '../../src/fixtures/test';

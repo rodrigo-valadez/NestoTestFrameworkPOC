@@ -1,3 +1,4 @@
+/** Self-contained English copy fixture; separate by locale so adding a language does not grow a shared map. */
 import type { AppText } from '../../src/i18n/app-text';
 
 export const enCA = {

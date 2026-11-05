@@ -14,6 +14,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Ver
 - Added a tool-agnostic PR template for concise reviews, including durable decision rationale, alternatives considered, and trade-offs.
 - Reduced CI matrix duplication without changing the eight browser/locale checks, and documented non-obvious coverage, localization, and safety decisions beside the code.
 - Replaced the multi-selector resolution loop with one explicit locator per control and removed its fixture and framework tests.
+- Added concise module comments documenting file responsibilities, separation boundaries, and safety decisions.
 
 ### Added
 

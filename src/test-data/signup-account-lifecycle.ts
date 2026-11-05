@@ -1,3 +1,7 @@
+/**
+ * Owns synthetic identity generation and the capped, lock-protected account-attempt ledger.
+ * It is separate from browser workflow code so persistence and privacy rules remain independently testable.
+ */
 import { closeSync, openSync, readFileSync, renameSync, unlinkSync, writeFileSync } from 'node:fs';
 import { randomBytes, randomUUID } from 'node:crypto';
 import { dirname, join } from 'node:path';

@@ -1,3 +1,7 @@
+/**
+ * Minimal fixture layer for tests that need environment metadata but not Page Objects or locale copy.
+ * This prevents API and configuration tests from inheriting unrelated UI fixtures.
+ */
 import { test as base } from '@playwright/test';
 import { loadEnvironmentConfig, type EnvironmentConfig } from '../config/environment';
 

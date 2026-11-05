@@ -1,3 +1,4 @@
+/** Static-analysis policy shared by source and tests; kept outside package scripts so rules remain reviewable. */
 import eslint from '@eslint/js';
 import prettier from 'eslint-config-prettier';
 import playwright from 'eslint-plugin-playwright';

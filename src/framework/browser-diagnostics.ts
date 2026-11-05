@@ -1,3 +1,7 @@
+/**
+ * Collects bounded, redacted browser errors and attaches them only to failed tests.
+ * Kept outside fixtures so redaction and retention behavior can be tested independently.
+ */
 import type { Page, TestInfo } from '@playwright/test';
 
 const MAX_ENTRIES = 100;

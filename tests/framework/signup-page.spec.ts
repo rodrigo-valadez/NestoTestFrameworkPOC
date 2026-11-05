@@ -1,7 +1,7 @@
+/** Local HTML contract for fixture and Page Object wiring; it intentionally makes no deployed-application claim. */
 import { expect, test } from '../../src/fixtures/test';
 import { loadSignupCases } from '../../src/test-data/signup-cases';
 
-// This uses local HTML and validates framework wiring, not a deployed application.
 for (const signupCase of loadSignupCases('self-contained')) {
   test(`drives signup controls for ${signupCase.id} using the project locale`, async ({
     page,

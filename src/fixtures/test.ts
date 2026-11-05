@@ -1,3 +1,7 @@
+/**
+ * Composes application-facing fixtures from focused loaders and Page Objects.
+ * Construction lives here so tests receive typed dependencies without turning Page Objects into service locators.
+ */
 import { test as base } from './environment-test';
 import { BrowserDiagnostics } from '../framework/browser-diagnostics';
 import type { AppText, SupportedLocale } from '../i18n/app-text';

@@ -292,6 +292,8 @@ Use separate manually approved Jenkins stages for live QA or ZAP. Restrict those
 
 `docs/` contains supporting plans and evidence, while `scripts/` contains command wrappers and report publishers. Start at this README; open those only when you need the deeper rationale.
 
+JSON files under `config/` and `test-data/` intentionally contain data only because JSON does not support comments. Their purpose, validation rules, and separation from executable code are documented by the typed loaders in `src/config/`, `src/i18n/`, and `src/test-data/`.
+
 ## Pull-request review and Revset
 
 The repository includes `.github/pull_request_template.md` so each PR states its outcome, affected layer, browser/locale evidence, risks, and validation in a consistent order. Revset is an external GitHub-connected review interface, not a Node dependency or GitHub Action, so there is no safe token or package to commit here. After the repository owner connects this repository at [revset.dev](https://revset.dev/), existing GitHub PRs can be reviewed there without changing the test runtime.

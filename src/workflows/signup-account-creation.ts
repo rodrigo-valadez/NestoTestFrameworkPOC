@@ -1,3 +1,7 @@
+/**
+ * Observes and classifies the conditional browser/API handoff after signup submission.
+ * Kept outside LiveSignupPage because response correlation and privacy classification span more than page controls.
+ */
 import type { Page, Request, Response } from '@playwright/test';
 import type { SyntheticSignupIdentity } from '../test-data/signup-account-lifecycle';
 

@@ -1,3 +1,4 @@
+/** Accessibility scanning is separate from functional contracts so violations retain severity and baseline metadata. */
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '../../src/fixtures/test';
 import {

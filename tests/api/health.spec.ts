@@ -1,3 +1,4 @@
+/** API-only smoke coverage; separate from UI specs so endpoint failures do not require a browser. */
 import { expect, test } from '../../src/fixtures/environment-test';
 import { requireApiHealthEnvironment } from '../../src/config/environment';
 

@@ -1,3 +1,4 @@
+/** Response-observer contracts use controlled doubles so privacy and correlation edge cases require no account writes. */
 import { expect, test } from '@playwright/test';
 import type { Page, Response } from '@playwright/test';
 import { EventEmitter } from 'node:events';

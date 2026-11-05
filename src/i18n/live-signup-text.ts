@@ -1,3 +1,7 @@
+/**
+ * Defines and selects the complete expected-copy contract for the deployed signup form.
+ * The locale values live in test-data so Page Objects depend on typed copy, not embedded translations.
+ */
 import type { SupportedLocale } from './app-text';
 import { enCA } from '../../test-data/expected-copy/live-signup/en-CA';
 import { frCA } from '../../test-data/expected-copy/live-signup/fr-CA';

@@ -1,3 +1,4 @@
+/** Read-only form-shape contract; separate from interactions so missing controls have a focused failure. */
 import { expect, test } from '../../src/fixtures/test';
 import type { Page } from '@playwright/test';
 import { requireRealAppEnvironment } from '../../src/config/environment';

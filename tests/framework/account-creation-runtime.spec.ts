@@ -1,3 +1,4 @@
+/** Contract tests for write-capable runner guards; separate from live execution so overrides are tested safely. */
 import { expect, test } from '@playwright/test';
 import {
   assertAccountCreationRuntime,

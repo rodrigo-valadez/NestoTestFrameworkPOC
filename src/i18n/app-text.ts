@@ -1,3 +1,7 @@
+/**
+ * Defines the small locale contract used by self-contained framework tests.
+ * It remains separate from deployed signup copy so local examples do not become live product assertions.
+ */
 export const supportedLocales = ['en-CA', 'fr-CA'] as const;
 
 export type SupportedLocale = (typeof supportedLocales)[number];

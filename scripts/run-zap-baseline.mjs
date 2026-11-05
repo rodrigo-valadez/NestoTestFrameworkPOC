@@ -1,3 +1,7 @@
+/**
+ * Guarded OWASP ZAP launcher restricted to explicitly allowlisted QA signup URLs.
+ * It remains separate from Playwright because passive security scanning has different tooling and authorization.
+ */
 import { chmodSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { resolve } from 'node:path';

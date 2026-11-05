@@ -1,3 +1,4 @@
+/** Scenario-parser contracts; separate from Page Object tests so bad external data fails before UI work. */
 import { expect, test } from '@playwright/test';
 import { loadSignupCases, parseSignupCases } from '../../src/test-data/signup-cases';
 

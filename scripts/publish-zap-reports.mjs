@@ -1,3 +1,7 @@
+/**
+ * Validates and publishes sanitized ZAP artifacts after a scan.
+ * Kept apart from the scanner so malformed or stale output cannot be published as successful evidence.
+ */
 import {
   existsSync,
   mkdirSync,

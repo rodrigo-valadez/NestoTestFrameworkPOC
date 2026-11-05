@@ -1,3 +1,7 @@
+/**
+ * Fail-closed validation for the only write-capable Playwright project.
+ * Separate from general environment loading because runtime concurrency overrides are a distinct safety boundary.
+ */
 export interface AccountCreationRuntime {
   projectName: string;
   retries: number;

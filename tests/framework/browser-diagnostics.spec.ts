@@ -1,3 +1,4 @@
+/** Tests diagnostics collection and redaction independently from the fixture that installs it. */
 import { expect, test } from '@playwright/test';
 import { BrowserDiagnostics, redactDiagnostic } from '../../src/framework/browser-diagnostics';
 

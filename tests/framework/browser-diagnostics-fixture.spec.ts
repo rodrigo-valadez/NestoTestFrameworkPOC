@@ -1,3 +1,4 @@
+/** Verifies the fixture-level diagnostics opt-out used by sensitive write-capable tests. */
 import { expect, test } from '../../src/fixtures/test';
 
 test.use({ browserDiagnosticsEnabled: false });

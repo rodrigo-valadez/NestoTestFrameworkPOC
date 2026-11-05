@@ -1,3 +1,7 @@
+/**
+ * Loads and validates versioned environment capabilities without exposing credentials.
+ * Kept separate from Playwright config so scripts and fixtures share the same production guard.
+ */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 

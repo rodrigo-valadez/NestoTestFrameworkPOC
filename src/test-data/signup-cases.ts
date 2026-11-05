@@ -1,3 +1,7 @@
+/**
+ * Parses self-contained scenario profiles into typed cases.
+ * Separate parsing keeps editable JSON data-driven without weakening TypeScript guarantees in tests.
+ */
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 

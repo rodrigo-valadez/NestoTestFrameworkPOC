@@ -1,3 +1,7 @@
+/**
+ * Converts one approved staging run into the committed, redacted summary under docs/.
+ * It is separate from test execution so ordinary runs never overwrite published evidence.
+ */
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { resolve } from 'node:path';

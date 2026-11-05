@@ -1,3 +1,4 @@
+/** Pure accessibility-governance tests; separate from browser scans to validate baseline policy deterministically. */
 import { expect, test } from '@playwright/test';
 import {
   evaluateAxeGate,

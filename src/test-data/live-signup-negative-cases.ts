@@ -1,3 +1,7 @@
+/**
+ * Validates the JSON inventory of deployed negative scenarios at the file boundary.
+ * Kept outside the spec so malformed or duplicate data fails before browser execution.
+ */
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 

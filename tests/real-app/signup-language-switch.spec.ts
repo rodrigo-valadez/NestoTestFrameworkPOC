@@ -1,3 +1,4 @@
+/** Locale-transition contract; separate from form validation so EN/FR routing failures remain explicit. */
 import { expect, test } from '../../src/fixtures/test';
 import type { Page } from '@playwright/test';
 import { loadLiveSignupText } from '../../src/i18n/live-signup-text';

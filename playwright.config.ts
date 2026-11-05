@@ -1,3 +1,7 @@
+/**
+ * Central execution policy for suite routing, browser/locale projects, reporters, and artifacts.
+ * It stays separate from fixtures so test composition cannot silently change runner safety rules.
+ */
 import { defineConfig, devices } from '@playwright/test';
 import type { Project } from '@playwright/test';
 import type { SupportedLocale } from './src/i18n/app-text';
