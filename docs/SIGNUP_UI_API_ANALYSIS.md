@@ -37,7 +37,7 @@ The email input used `type="text"`. Password inputs used `type="password"` and `
 
 ## Candidate selector contract for Stage 4
 
-Prefer label and role locators for text fields, consent, submit, and language switching. The observed field IDs such as `field-2` and `field-4` appear generated and should not be primary selectors. Stable form names may be fallback candidates after uniqueness is verified. The province selector needs focused analysis because its accessible label differs from its visible text and it lacks a form name.
+Prefer one label or role locator for text fields, consent, submit, and language switching. The observed field IDs such as `field-2` and `field-4` appear generated and should not be selectors. A documented stable form name is acceptable when a known accessibility defect blocks a semantic locator; validate that defect separately.
 
 ## Write-capable observation design
 

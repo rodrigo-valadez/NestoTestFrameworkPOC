@@ -1,10 +1,12 @@
 [
   {
     "id": "weak-password",
-    "target": "password"
+    "target": "password",
+    "expectedError": "passwordMinimum"
   },
   {
     "id": "email-exceeds-standard-length",
-    "target": "email"
+    "target": "email",
+    "expectedError": "invalidEmail"
   }
 ]

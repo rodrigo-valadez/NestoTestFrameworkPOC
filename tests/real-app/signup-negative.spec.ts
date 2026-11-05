@@ -9,6 +9,8 @@ const VALID_PASSWORD = 'QaAutomation7Pass';
 
 async function preventAccountCreation(page: Page): Promise<() => number> {
   let attempts = 0;
+  // This route is a safety boundary, not only an assertion: even a client-validation
+  // regression cannot create a QA account from these read-only tests.
   await page.route('**/accounts', async route => {
     if (route.request().method() === 'POST') {
       attempts += 1;
@@ -32,6 +34,10 @@ async function expectClientRejection(page: Page, target: Locator, attempts: () =
     )
     .toBe(true);
   await expect(page).toHaveURL(/\/signup$/);
+}
+
+async function expectLocalizedMessage(page: Page, message: string): Promise<void> {
+  await expect(page.getByText(message, { exact: true })).toBeVisible();
 }
 
 function edgeInput(scenario: LiveSignupNegativeCase) {
@@ -72,6 +78,9 @@ test('SGN-005 empty required signup fields are rejected before the API @real-app
   await liveSignupPage.submit();
 
   await expectClientRejection(page, email, attempts);
+  await expect(page.getByText(liveSignupText.validation.required, { exact: true })).toHaveCount(2);
+  await expectLocalizedMessage(page, liveSignupText.validation.invalidEmail);
+  await expectLocalizedMessage(page, liveSignupText.validation.passwordMinimum);
   expect(attempts()).toBe(0);
 });
 
@@ -96,6 +105,7 @@ test('SGN-005 malformed email is rejected before the API @real-app', async ({
   await liveSignupPage.submit();
 
   await expectClientRejection(page, email, attempts);
+  await expectLocalizedMessage(page, liveSignupText.validation.invalidEmail);
   expect(attempts()).toBe(0);
 });
 
@@ -121,6 +131,7 @@ test('SGN-015 password confirmation mismatch is rejected before the API @real-ap
   await liveSignupPage.submit();
 
   await expectClientRejection(page, confirmation, attempts);
+  await expectLocalizedMessage(page, liveSignupText.validation.passwordMismatch);
   expect(attempts()).toBe(0);
 });
 
@@ -153,6 +164,7 @@ for (const scenario of loadLiveSignupNegativeCases()) {
     await liveSignupPage.submit();
 
     await expectClientRejection(page, target, attempts);
+    await expectLocalizedMessage(page, liveSignupText.validation[scenario.expectedError]);
     expect(attempts()).toBe(0);
   });
 }

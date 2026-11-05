@@ -4,6 +4,7 @@ import { resolve } from 'node:path';
 export interface LiveSignupNegativeCase {
   id: string;
   target: 'email' | 'password';
+  expectedError: 'invalidEmail' | 'passwordMinimum';
 }
 
 export function loadLiveSignupNegativeCases(): LiveSignupNegativeCase[] {
@@ -23,11 +24,19 @@ export function loadLiveSignupNegativeCases(): LiveSignupNegativeCase[] {
       !/^[a-z][a-z0-9-]*$/.test(candidate.id) ||
       ids.has(candidate.id) ||
       (candidate.target !== 'email' && candidate.target !== 'password') ||
-      Object.keys(candidate).some(key => key !== 'id' && key !== 'target')
+      (candidate.expectedError !== 'invalidEmail' &&
+        candidate.expectedError !== 'passwordMinimum') ||
+      Object.keys(candidate).some(
+        key => key !== 'id' && key !== 'target' && key !== 'expectedError'
+      )
     ) {
       throw new Error('Live signup negative case is malformed or duplicated.');
     }
     ids.add(candidate.id);
-    return { id: candidate.id, target: candidate.target };
+    return {
+      id: candidate.id,
+      target: candidate.target,
+      expectedError: candidate.expectedError
+    };
   });
 }

@@ -4,6 +4,19 @@ This repository demonstrates a maintainable, agent-guided quality automation app
 
 Start with the [project summary](docs/PROJECT_SUMMARY.md) for goals, assumptions, results, bugs, reports, and remaining work. Test-writing agents must also follow [AGENTS.md](AGENTS.md) and the [agent test workflow](docs/AGENT_TEST_WORKFLOW.md).
 
+## What actually runs
+
+Playwright launches browsers directly; this repository does **not** use ChromeDriver, GeckoDriver, or SafariDriver. The ordinary read-only matrix is explicit in `playwright.config.ts` and CI:
+
+| Browser engine / channel                          | English          | French           |
+| ------------------------------------------------- | ---------------- | ---------------- |
+| Chromium                                          | `chromium-en-CA` | `chromium-fr-CA` |
+| Firefox                                           | `firefox-en-CA`  | `firefox-fr-CA`  |
+| WebKit (Safari engine)                            | `webkit-en-CA`   | `webkit-fr-CA`   |
+| Microsoft Edge (optional locally, required in CI) | `edge-en-CA`     | `edge-fr-CA`     |
+
+All self-contained tests run in the eight CI projects above. All read-only QA signup tests—including localized validation-message assertions—run in the six Chromium/Firefox/WebKit projects. The only deliberate exception is the write-capable account-creation test: it is restricted to Chromium English, serial execution, and a separate human-controlled safety gate so it cannot create the same account eight times.
+
 ## Current capability
 
 | Area                  | Status              | What is available                                                                                                                                                               |
@@ -64,6 +77,21 @@ Run only Chromium for faster feedback:
 pnpm run test:chromium
 ```
 
+Run a browser or locale slice explicitly:
+
+```bash
+pnpm run test:firefox
+pnpm run test:webkit
+pnpm run test:en-CA
+pnpm run test:fr-CA
+```
+
+List every selected test without running it:
+
+```bash
+pnpm run test:list
+```
+
 Run a single project:
 
 ```bash
@@ -82,9 +110,10 @@ Run one browser/locale project:
 
 ```bash
 pnpm run test:env staging real-app --project=chromium-en-CA
+pnpm run test:env staging real-app --project=firefox-fr-CA
 ```
 
-The account-creation suite is separate, write capable, and currently disabled by its local attempt ledger. Historical approval does not authorize more accounts.
+The negative suite asserts the observed English and French required-field, invalid-email, password-mismatch, and minimum-password messages. The account-creation suite is separate, write capable, and currently disabled by its local attempt ledger. Historical approval does not authorize more accounts.
 
 ### Optional Edge coverage
 
@@ -219,7 +248,7 @@ The committed reports exclude page bodies, headers, cookies, form values, screen
 
 ### GitHub Actions
 
-`.github/workflows/quality-gate.yml` already runs on pull requests and pushes to `main`. It installs locked dependencies, runs static checks, installs Chromium/Firefox/WebKit/Edge, runs the self-contained suites, and uploads Playwright artifacts for 14 days.
+`.github/workflows/quality-gate.yml` runs on pull requests and pushes to `main`. GitHub displays a separate named check for every browser/locale pair plus static checks, followed by the required aggregate `Quality gate`. This makes missing French or non-Chromium coverage visible without opening a log. Failure artifacts are retained for 14 days.
 
 After the workflow runs once, make the `Quality gate` job a required status check in the `main` branch ruleset. Keep live QA, account creation, and ZAP scans out of pull-request automation unless Nesto supplies explicit environment authorization, protected secrets, concurrency limits, and a manual approval environment.
 
@@ -252,24 +281,20 @@ pipeline {
 
 Use separate manually approved Jenkins stages for live QA or ZAP. Restrict those stages to authorized agents, use immutable images, prevent concurrent scans, retain sanitized reports only, and never expose production or account-writing switches through ordinary build parameters.
 
-## Architecture
+## Architecture: four layers
 
-```text
-.agents/skills/             repository-local agent skills
-config/environments/       environment targets and safety capabilities
-docs/                       plans, handoffs, results, bugs, and reports
-scripts/                    guarded runners and sanitized report publishers
-src/fixtures/               Playwright dependency injection
-src/framework/              locator and test infrastructure
-src/i18n/                   locale contracts
-src/pages/                  task-oriented Page Objects
-test-data/                  copy, scenario, and accessibility baselines
-tests/framework/            self-contained framework tests
-tests/real-app/             opt-in deployed UI checks
-tests/api/                  read-only API scaffold
-```
+| Layer              | Folders                                                           | Responsibility                                                                                              |
+| ------------------ | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Configuration      | `playwright.config.ts`, `config/`, `src/config/`                  | Select the suite, browser, locale, environment, and safety capabilities.                                    |
+| Reusable test code | `src/pages/`, `src/workflows/`, `src/fixtures/`, `src/framework/` | Page interactions, cross-page journeys, dependency injection, browser diagnostics, and accessibility gates. |
+| Test inputs        | `src/i18n/`, `src/test-data/`, `test-data/`                       | Typed locale copy, parsers, scenarios, and approved baselines.                                              |
+| Executable checks  | `tests/framework/`, `tests/real-app/`, `tests/api/`               | Local framework contracts, opt-in QA behavior, and the read-only API scaffold.                              |
 
-The agent workflow moves from feature brief through test plan, UI/API analysis, selector contract, test data, implementation, results, and metrics. Every dependent stage requires human approval, and a separate skeptical reviewer challenges gaps and unnecessary complexity.
+`docs/` contains supporting plans and evidence, while `scripts/` contains command wrappers and report publishers. Start at this README; open those only when you need the deeper rationale.
+
+## Pull-request review and Revset
+
+The repository includes `.github/pull_request_template.md` so each PR states its outcome, affected layer, browser/locale evidence, risks, and validation in a consistent order. Revset is an external GitHub-connected review interface, not a Node dependency or GitHub Action, so there is no safe token or package to commit here. After the repository owner connects this repository at [revset.dev](https://revset.dev/), existing GitHub PRs can be reviewed there without changing the test runtime.
 
 ## Project records
 

@@ -7,7 +7,7 @@ Observed against the QA signup application on 2026-09-23. No production target w
 - **Severity:** Low
 - **Status:** Open, product and language-owner review requested
 - **Scope:** `/fr/signup`
-- **Observed:** The visible French form exposes the phone-country selector with an English accessible name. The test uses the stable form name fallback because the French expected-copy baseline cannot truthfully supply a translated label.
+- **Observed:** The visible French form exposes the phone-country selector with an English accessible name. Functional interaction uses the stable form name because the French expected-copy baseline cannot truthfully supply a translated label; accessibility validation remains separate.
 - **Expected:** Controls on the French signup page should expose an approved French accessible name.
 - **Impact:** A French screen-reader user encounters mixed-language control naming.
 

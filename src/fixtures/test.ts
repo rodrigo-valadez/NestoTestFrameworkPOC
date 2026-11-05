@@ -1,5 +1,4 @@
 import { test as base } from './environment-test';
-import { LocatorResolver } from '../framework/locator-resolver';
 import { BrowserDiagnostics } from '../framework/browser-diagnostics';
 import type { AppText, SupportedLocale } from '../i18n/app-text';
 import { isSupportedLocale } from '../i18n/app-text';
@@ -15,7 +14,6 @@ interface AppFixtures {
   liveSignupText: LiveSignupText;
   liveSignupPage: LiveSignupPage;
   locale: SupportedLocale;
-  locatorResolver: LocatorResolver;
   signupPage: SignupPage;
   browserDiagnostics: BrowserDiagnostics;
   signupCases: SignupCase[];
@@ -40,7 +38,7 @@ export const test = base.extend<AppFixtures>({
   liveSignupText: async ({ locale }, use) => {
     await use(loadLiveSignupText(locale));
   },
-  liveSignupPage: async ({ page, environment, locale, liveSignupText, locatorResolver }, use) => {
+  liveSignupPage: async ({ page, environment, locale, liveSignupText }, use) => {
     const target = requireRealAppEnvironment(environment);
     const paths: Record<SupportedLocale, string> = {
       'en-CA': target.signupPath,
@@ -51,16 +49,12 @@ export const test = base.extend<AppFixtures>({
         page,
         paths[locale],
         paths[liveSignupText.languageSwitchTarget],
-        liveSignupText,
-        locatorResolver
+        liveSignupText
       )
     );
   },
-  locatorResolver: async ({ page }, use, testInfo) => {
-    await use(new LocatorResolver(page, testInfo));
-  },
-  signupPage: async ({ page, appText, locatorResolver }, use) => {
-    await use(new SignupPage(page, appText, locatorResolver));
+  signupPage: async ({ page, appText }, use) => {
+    await use(new SignupPage(page, appText));
   },
   browserDiagnostics: [
     async ({ page, browserDiagnosticsEnabled }, use, testInfo) => {

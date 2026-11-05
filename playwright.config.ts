@@ -4,7 +4,6 @@ import type { SupportedLocale } from './src/i18n/app-text';
 import { loadEnvironmentConfig } from './src/config/environment';
 
 const environment = loadEnvironmentConfig();
-const locales: readonly SupportedLocale[] = ['en-CA', 'fr-CA'];
 const includeEdge = process.env.PLAYWRIGHT_INCLUDE_EDGE === 'true';
 const liveSuite = process.env.LIVE_SUITE ?? 'framework';
 const publishLatestReport = process.env.PUBLISH_LATEST_REPORT === 'true';
@@ -13,30 +12,47 @@ if (!['framework', 'real-app', 'api', 'account-creation'].includes(liveSuite)) {
   throw new Error(`Unsupported LIVE_SUITE: ${liveSuite}`);
 }
 
-function localizedProjects(
+const suitePatterns: Record<string, string> = {
+  framework: '**/framework/**/*.spec.ts',
+  'real-app': '**/real-app/**/*.spec.ts',
+  api: '**/api/**/*.spec.ts',
+  'account-creation': '**/real-app/account-creation/**/*.spec.ts'
+};
+
+function browserLocaleProject(
   browserName: string,
   deviceName: keyof typeof devices,
+  locale: SupportedLocale,
   browserUse: Project['use'] = {}
-): Project[] {
-  return locales.map(locale => ({
+): Project {
+  return {
     name: `${browserName}-${locale}`,
-    metadata: { locale },
+    metadata: { browser: browserName, locale },
     use: { ...devices[deviceName], ...browserUse, locale }
-  }));
+  };
 }
+
+// Deliberately list every pair here instead of generating it from two arrays. This is
+// the executable coverage contract: a missing French or browser project is visible in
+// review and cannot be hidden by a faulty loop or filter.
+const readOnlyProjects: Project[] = [
+  browserLocaleProject('chromium', 'Desktop Chrome', 'en-CA'),
+  browserLocaleProject('chromium', 'Desktop Chrome', 'fr-CA'),
+  browserLocaleProject('firefox', 'Desktop Firefox', 'en-CA'),
+  browserLocaleProject('firefox', 'Desktop Firefox', 'fr-CA'),
+  browserLocaleProject('webkit', 'Desktop Safari', 'en-CA'),
+  browserLocaleProject('webkit', 'Desktop Safari', 'fr-CA')
+];
+
+const edgeProjects: Project[] = [
+  browserLocaleProject('edge', 'Desktop Edge', 'en-CA', { channel: 'msedge' }),
+  browserLocaleProject('edge', 'Desktop Edge', 'fr-CA', { channel: 'msedge' })
+];
 
 export default defineConfig({
   testDir: './tests',
-  testMatch:
-    liveSuite === 'account-creation' ? '**/real-app/account-creation/**/*.spec.ts' : '**/*.spec.ts',
-  testIgnore:
-    liveSuite === 'real-app'
-      ? ['**/api/**', '**/framework/**', '**/account-creation/**']
-      : liveSuite === 'api'
-        ? ['**/real-app/**', '**/framework/**', '**/account-creation/**']
-        : liveSuite === 'account-creation'
-          ? ['**/framework/**', '**/api/**']
-          : ['**/real-app/**', '**/api/**', '**/account-creation/**'],
+  testMatch: suitePatterns[liveSuite],
+  testIgnore: liveSuite === 'real-app' ? ['**/account-creation/**'] : [],
   fullyParallel: liveSuite !== 'account-creation',
   forbidOnly: Boolean(process.env.CI),
   retries: liveSuite === 'account-creation' ? 0 : process.env.CI ? 2 : 0,
@@ -70,10 +86,5 @@ export default defineConfig({
               use: { ...devices['Desktop Chrome'], locale: 'en-CA' }
             }
           ]
-        : [
-            ...localizedProjects('chromium', 'Desktop Chrome'),
-            ...localizedProjects('firefox', 'Desktop Firefox'),
-            ...localizedProjects('webkit', 'Desktop Safari'),
-            ...(includeEdge ? localizedProjects('edge', 'Desktop Edge', { channel: 'msedge' }) : [])
-          ]
+        : [...readOnlyProjects, ...(includeEdge ? edgeProjects : [])]
 });

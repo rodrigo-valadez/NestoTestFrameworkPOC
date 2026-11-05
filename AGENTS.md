@@ -32,7 +32,7 @@ Keep feature plans discoverable from `README.md`. Update the plan when evidence 
 
 1. Prefer accessible roles and names (`getByRole`, `getByLabel`), then stable test IDs/attributes, scoped relationships, text patterns, and only then structural CSS/XPath.
 2. Keep selectors semantic and unique. Do not use `nth()`, forced clicks, or fixed sleeps to mask ambiguity or timing problems.
-3. When a real fallback is necessary, use `src/framework/locator-resolver.ts` with an explicit ordered list of named strategies. It records the winning strategy in test annotations and rejects ambiguous visible matches. `.or()` is a union, **not** ordered fallback.
+3. Use one clear locator per control. If an accessibility defect prevents a semantic locator, document the defect beside one stable attribute locator and keep accessibility validation separate. Do not add selector loops or `.or()` chains to hide an uncertain contract.
 4. Keep Page Objects task-oriented: encapsulate page controls/navigation, not assertions for whole business journeys. Deterministic navigation may return a destination Page Object; conditional multi-page flows belong in focused workflow classes, not a global controller.
 5. Do not place translated UI strings in Page Objects. Use typed per-locale copy/fixtures as in `src/i18n/live-signup-text.ts` and `test-data/expected-copy/live-signup/`. Expected copy is a reviewed test baseline, not imported from the application's own translation files. The current QA baselines were observed, not yet product-owner approved.
 
